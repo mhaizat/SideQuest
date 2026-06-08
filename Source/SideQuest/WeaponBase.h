@@ -2,6 +2,8 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "Kismet/KismetSystemLibrary.h"
+#include "DrawDebugHelpers.h"
 #include "WeaponBase.generated.h"
 
 UCLASS()
@@ -15,6 +17,10 @@ public:
 	UPROPERTY(VisibleAnywhere)
 	USceneComponent* Root;
 	
+	bool IsTracable() { return bCanTrace; }
+
+	void StartTrace();
+	void StopTrace();
 	void PerformTrace();
 
 	virtual void Tick(float DeltaTime) override;
@@ -23,5 +29,8 @@ protected:
 	virtual void BeginPlay() override;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
-	USkeletalMeshComponent* WeaponMesh;
+	UStaticMeshComponent* WeaponMesh;
+
+	UPROPERTY()
+	bool bCanTrace = false;
 };
