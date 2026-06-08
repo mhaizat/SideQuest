@@ -2,7 +2,7 @@
 
 AWeaponBase::AWeaponBase()
 {
-	PrimaryActorTick.bCanEverTick = false;
+	PrimaryActorTick.bCanEverTick = true;
 
 	Root = CreateDefaultSubobject<USceneComponent>(TEXT("Root"));
 	SetRootComponent(Root);
@@ -24,6 +24,13 @@ void AWeaponBase::BeginPlay()
 void AWeaponBase::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
+	Super::Tick(DeltaTime);
+
+	if (bCanTrace)
+	{
+		PerformTrace();
+	}
 }
 
 void AWeaponBase::StartTrace()
@@ -43,9 +50,9 @@ void AWeaponBase::PerformTrace()
 	AActor* OwnerActor = GetOwner();
 	if (!OwnerActor) return;
 
-	FVector Start = OwnerActor->GetActorLocation() + FVector(0, 0, 50.f);
-	FVector End = Start + OwnerActor->GetActorForwardVector() * 120.f;
-	FVector Forward = OwnerActor->GetActorForwardVector();
+	FVector Start = WeaponMesh->GetComponentLocation();
+	FVector Forward = WeaponMesh->GetForwardVector();
+	FVector End = Start + Forward * 120.f;
 
 	TArray<AActor*> Ignore;
 	Ignore.Add(OwnerActor);
@@ -58,5 +65,7 @@ void AWeaponBase::PerformTrace()
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Hit: %s"), *Hit.GetActor()->GetName());
 	}
+
+	DrawDebugLine(GetWorld(), Start, End, FColor::Red, false, 1.f, 0, 2.f);
 }
 

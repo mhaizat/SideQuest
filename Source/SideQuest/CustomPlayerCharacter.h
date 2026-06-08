@@ -16,6 +16,12 @@ class SIDEQUEST_API ACustomPlayerCharacter : public ASideQuestCharacter
 public:
 	ACustomPlayerCharacter();
 
+	UFUNCTION()
+	void AttackWindowStart();
+
+	UFUNCTION()
+	void AttackWindowEnd();
+
 protected:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
@@ -31,12 +37,10 @@ protected:
 	UInputAction* AttackAction;
 
 	void Attack();
-	void EndAttackWindow();
 
 	UPROPERTY()
 	AWeaponBase* EquippedWeapon;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Combat")
 	TSubclassOf<AWeaponBase> WeaponClass;
-
 };
