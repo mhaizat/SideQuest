@@ -35,6 +35,7 @@ void AWeaponBase::Tick(float DeltaTime)
 
 void AWeaponBase::StartTrace()
 {
+	HitActors.Empty();
 	bCanTrace = true;
 }
 
@@ -63,7 +64,12 @@ void AWeaponBase::PerformTrace()
 		
 	if (bHit && Hit.GetActor())
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Hit: %s"), *Hit.GetActor()->GetName());
+		if (!HitActors.Contains(Hit.GetActor()))
+		{
+			HitActors.Add(Hit.GetActor());
+
+			UGameplayStatics::ApplyDamage(Hit.GetActor(), 20.f, GetOwner()->GetInstigatorController(), this, nullptr);
+		}
 	}
 
 	DrawDebugLine(GetWorld(), Start, End, FColor::Red, false, 1.f, 0, 2.f);

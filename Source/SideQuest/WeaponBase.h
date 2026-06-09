@@ -4,6 +4,7 @@
 #include "GameFramework/Actor.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include "DrawDebugHelpers.h"
+#include "Kismet/GameplayStatics.h"
 #include "WeaponBase.generated.h"
 
 UCLASS()
@@ -33,4 +34,6 @@ protected:
 
 	UPROPERTY()
 	bool bCanTrace = false;
+
+	TArray<AActor*> HitActors;
 };
