@@ -20,6 +20,11 @@ void UAttributeComponent::TakeDamage(float Damage)
 	Health = FMath::Clamp(Health - Damage, 0.f, MaxHealth);
 
 	OnHealthChanged.Broadcast(Health, MaxHealth);
+
+	if (Health <= 0.f)
+	{
+		OnDeath.Broadcast();
+	}
 }
 
 void UAttributeComponent::Heal(float Amount)
