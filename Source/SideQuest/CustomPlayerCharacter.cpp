@@ -27,6 +27,13 @@ void ACustomPlayerCharacter::Attack()
 {
 	if (!AttackMontage || !WeaponManager) return;
 
+	AWeaponBase* CurrentWeapon = WeaponManager->GetCurrentEquippedWeapon();
+
+	if (!CurrentWeapon)
+	{
+		return;
+	}
+
 	WeaponManager->SetAttacking(true);
 
 	PlayAnimMontage(AttackMontage);
