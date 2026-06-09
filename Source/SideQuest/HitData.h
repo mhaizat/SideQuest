@@ -1,6 +1,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "WeaponTypes.h"
 #include "HitData.generated.h"
 
 class AActor;
@@ -26,4 +27,7 @@ struct FHitData
 	// Which weapon caused the hit (sword, axe, etc.)
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	AWeaponBase* Weapon = nullptr;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	EWeaponTypes WeaponType;
 };

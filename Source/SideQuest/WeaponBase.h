@@ -7,6 +7,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "DamageInterface.h"
 #include "HitData.h"
+#include "WeaponTypes.h"
 #include "WeaponBase.generated.h"
 
 UCLASS()
@@ -38,4 +39,12 @@ protected:
 	bool bCanTrace = false;
 
 	TArray<AActor*> HitActors;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
+	float Damage = 20.f;
+
+	float GetDamage() const;
+
+	UPROPERTY(EditDefaultsOnly)
+	EWeaponTypes WeaponType;
 };

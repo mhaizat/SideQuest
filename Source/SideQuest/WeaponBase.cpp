@@ -82,15 +82,34 @@ void AWeaponBase::PerformTrace()
 
 			FHitData HitData;
 
-			HitData.Damage = 20.f;
+			HitData.Damage = GetDamage();
 			HitData.AttackDirection = AttackDir;
 			HitData.InstigatorActor = OwnerActor;
 			HitData.Weapon = this;
+
+			HitData.WeaponType = WeaponType;
 
 			Damageable->ReceiveHit(HitData);
 		}
 	}
 
 	DrawDebugLine(GetWorld(), Start, End, FColor::Red, false, 1.f, 0, 2.f);
+}
+
+float AWeaponBase::GetDamage() const
+{
+	switch (WeaponType)
+	{
+	case EWeaponTypes::Sword:
+		return 100.f;
+
+	case EWeaponTypes::Axe:
+		return 35.f;
+
+	case EWeaponTypes::Hammer:
+		return 50.f;
+	}
+
+	return 20.f;
 }
 
