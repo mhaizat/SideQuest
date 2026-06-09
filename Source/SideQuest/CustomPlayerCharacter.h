@@ -23,6 +23,9 @@ public:
 	UFUNCTION()
 	void AttackWindowEnd();
 
+	void EquipWeaponSlot1();
+	void EquipWeaponSlot2();
+
 protected:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	virtual void BeginPlay() override;
@@ -39,6 +42,12 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	UInputAction* AttackAction;
+
+	UPROPERTY(EditAnywhere, Category = "Input")
+	UInputAction* Slot1Action;
+
+	UPROPERTY(EditAnywhere, Category = "Input")
+	UInputAction* Slot2Action;
 
 	UPROPERTY()
 	AWeaponBase* EquippedWeapon;

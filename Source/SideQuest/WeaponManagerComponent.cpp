@@ -10,10 +10,10 @@ void UWeaponManagerComponent::BeginPlay()
 {
 	Super::BeginPlay();
 
-	if (WeaponInventory.Num() > 0)
-	{
-		EquipWeapon(0);
-	}
+	//if (WeaponInventory.Num() > 0)
+	//{
+	//	EquipWeapon(0);
+	//}
 }
 
 void UWeaponManagerComponent::EquipWeapon(int32 Index)

@@ -13,6 +13,8 @@ void ACustomPlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerIn
 	if (UEnhancedInputComponent* EnhancedInputComponent = Cast<UEnhancedInputComponent>(PlayerInputComponent))
 	{
 		EnhancedInputComponent->BindAction(AttackAction, ETriggerEvent::Started, this, &ACustomPlayerCharacter::Attack);
+		EnhancedInputComponent->BindAction(Slot1Action, ETriggerEvent::Started, this, &ACustomPlayerCharacter::EquipWeaponSlot1);
+		EnhancedInputComponent->BindAction(Slot2Action, ETriggerEvent::Started, this, &ACustomPlayerCharacter::EquipWeaponSlot2);
 	}
 }
 
@@ -47,4 +49,20 @@ void ACustomPlayerCharacter::AttackWindowEnd()
 {
 	if (!EquippedWeapon) return;
 	EquippedWeapon->StopTrace();
+}
+
+void ACustomPlayerCharacter::EquipWeaponSlot1()
+{
+	if (WeaponManager)
+	{
+		WeaponManager->EquipWeapon(0);
+	}
+}
+
+void ACustomPlayerCharacter::EquipWeaponSlot2()
+{
+	if (WeaponManager)
+	{
+		WeaponManager->EquipWeapon(1);
+	}
 }
