@@ -23,6 +23,8 @@ public:
 
 	bool IsAttacking() const;
 
+	AWeaponBase* GetCurrentEquippedWeapon() { return EquippedWeapon; }
+
 protected:
 	virtual void BeginPlay() override;
 

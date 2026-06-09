@@ -32,6 +32,8 @@ void AWeaponBase::Tick(float DeltaTime)
 
 void AWeaponBase::StartTrace()
 {
+	UE_LOG(LogTemp, Warning, TEXT("TRACE STARTED"));
+
 	HitActors.Empty();
 	bCanTrace = true;
 }
@@ -43,7 +45,11 @@ void AWeaponBase::StopTrace()
 
 void AWeaponBase::PerformTrace()
 {
+	UE_LOG(LogTemp, Warning, TEXT("TRACE RUNNING 1"));
+	
 	if (!bCanTrace) return;
+
+	UE_LOG(LogTemp, Warning, TEXT("TRACE RUNNING 2"));
 
 	AActor* OwnerActor = GetOwner();
 	if (!OwnerActor) return;
@@ -73,7 +79,15 @@ void AWeaponBase::PerformTrace()
 			if (!Damageable) return;
 
 			FVector AttackDir = (Hit.GetActor()->GetActorLocation() - OwnerActor->GetActorLocation()).GetSafeNormal();
-			Damageable->ReceiveHit(20.f, AttackDir);
+
+			FHitData HitData;
+
+			HitData.Damage = 20.f;
+			HitData.AttackDirection = AttackDir;
+			HitData.InstigatorActor = OwnerActor;
+			HitData.Weapon = this;
+
+			Damageable->ReceiveHit(HitData);
 		}
 	}
 

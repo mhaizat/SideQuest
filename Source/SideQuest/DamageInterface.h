@@ -2,6 +2,7 @@
 
 #include "CoreMinimal.h"
 #include "UObject/Interface.h"
+#include "HitData.h"
 #include "DamageInterface.generated.h"
 
 UINTERFACE(MinimalAPI)
@@ -16,5 +17,5 @@ class SIDEQUEST_API IDamageInterface
 
 public:
 
-	virtual void ReceiveHit(float Damage, FVector AttackDirection) = 0;
+	virtual void ReceiveHit(const FHitData& HitData) = 0;
 };

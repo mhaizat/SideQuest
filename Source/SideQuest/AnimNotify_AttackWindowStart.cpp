@@ -6,11 +6,17 @@ void UAnimNotify_AttackWindowStart::Notify(USkeletalMeshComponent* MeshComp, UAn
 
 	if (!MeshComp) return;
 
+	UE_LOG(LogTemp, Warning, TEXT("START NOTIFY FIRED 2"));
 	AActor* Owner = MeshComp->GetOwner();
 	if (!Owner) return;
+
+	UE_LOG(LogTemp, Warning, TEXT("START NOTIFY FIRED 3"));
 
 	ACustomPlayerCharacter* Character = Cast<ACustomPlayerCharacter>(Owner);
 	if (!Character) return;
 
+	UE_LOG(LogTemp, Warning, TEXT("START NOTIFY FIRED 4"));
+
 	Character->AttackWindowStart();
+
 }

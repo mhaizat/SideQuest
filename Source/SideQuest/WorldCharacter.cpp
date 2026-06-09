@@ -36,7 +36,7 @@ void AWorldCharacter::Die()
 {
 	UE_LOG(LogTemp, Warning, TEXT("%s died"), *GetName());
 
-	// basic behavior for now
+	//! basic behavior for now
 	DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
 
 	GetCharacterMovement()->DisableMovement();
@@ -49,21 +49,18 @@ void AWorldCharacter::OnHitReact()
 	UE_LOG(LogTemp, Warning, TEXT("%s hit reacted"), *GetName());
 }
 
-void AWorldCharacter::ReceiveHit(float Damage, FVector AttackDirection)
+void AWorldCharacter::ReceiveHit(const FHitData& HitData)
 {
-	if (Attributes)
-	{
-		Attributes->TakeDamage(Damage);
-	}
+	if (!Attributes) return;
 
-	UE_LOG(LogTemp, Warning, TEXT("ReceiveHit CALLED"));
+	Attributes->TakeDamage(HitData.Damage);
 
 	OnHitReact();
 
 	FVector Forward = GetActorForwardVector();
 
-	float ForwardDot = FVector::DotProduct(Forward, -AttackDirection);
-	float RightDot = FVector::DotProduct(GetActorRightVector(), AttackDirection);
+	float ForwardDot = FVector::DotProduct(Forward, -HitData.AttackDirection);
+	float RightDot = FVector::DotProduct(GetActorRightVector(), HitData.AttackDirection);
 
 	FString HitDirection = "Front";
 
@@ -76,7 +73,5 @@ void AWorldCharacter::ReceiveHit(float Damage, FVector AttackDirection)
 		HitDirection = (ForwardDot > 0) ? "Front" : "Back";
 	}
 
-	UE_LOG(LogTemp, Warning, TEXT("%s hit from %s"),
-		*GetName(),
-		*HitDirection);
+	UE_LOG(LogTemp, Warning, TEXT("%s hit from %s"), *GetName(), *HitDirection);
 }

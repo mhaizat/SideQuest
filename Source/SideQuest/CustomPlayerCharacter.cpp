@@ -34,14 +34,38 @@ void ACustomPlayerCharacter::Attack()
 
 void ACustomPlayerCharacter::AttackWindowStart()
 {
-	if (!EquippedWeapon) return;
-	EquippedWeapon->StartTrace();
+	if (!WeaponManager)
+	{
+		return;
+	}
+
+	AWeaponBase* CurrentWeapon = WeaponManager->GetCurrentEquippedWeapon();
+
+	if (!CurrentWeapon)
+	{
+		return;
+	}
+
+	UE_LOG(LogTemp, Warning, TEXT("AttackWindowStart Started"));
+
+	CurrentWeapon->StartTrace();
 }
 
 void ACustomPlayerCharacter::AttackWindowEnd()
 {
-	if (!EquippedWeapon) return;
-	EquippedWeapon->StopTrace();
+	if (!WeaponManager)
+	{
+		return;
+	}
+
+	AWeaponBase* CurrentWeapon = WeaponManager->GetCurrentEquippedWeapon();
+
+	if (!CurrentWeapon)
+	{
+		return;
+	}
+
+	CurrentWeapon->StopTrace();
 }
 
 void ACustomPlayerCharacter::EquipWeaponSlot1()

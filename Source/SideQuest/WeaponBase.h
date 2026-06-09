@@ -6,6 +6,7 @@
 #include "DrawDebugHelpers.h"
 #include "Kismet/GameplayStatics.h"
 #include "DamageInterface.h"
+#include "HitData.h"
 #include "WeaponBase.generated.h"
 
 UCLASS()
