@@ -26,8 +26,7 @@ float AWorldCharacter::TakeDamage(float DamageAmount, FDamageEvent const& Damage
 	if (Attributes)
 	{
 		Attributes->TakeDamage(DamageAmount);
-
-		UE_LOG(LogTemp, Warning, TEXT("%s took %f damage"), *GetName(), DamageAmount);
+		OnHitReact();
 	}
 
 	return DamageAmount;
@@ -45,3 +44,39 @@ void AWorldCharacter::Die()
 	SetLifeSpan(5.f);
 }
 
+void AWorldCharacter::OnHitReact()
+{
+	UE_LOG(LogTemp, Warning, TEXT("%s hit reacted"), *GetName());
+}
+
+void AWorldCharacter::ReceiveHit(float Damage, FVector AttackDirection)
+{
+	if (Attributes)
+	{
+		Attributes->TakeDamage(Damage);
+	}
+
+	UE_LOG(LogTemp, Warning, TEXT("ReceiveHit CALLED"));
+
+	OnHitReact();
+
+	FVector Forward = GetActorForwardVector();
+
+	float ForwardDot = FVector::DotProduct(Forward, -AttackDirection);
+	float RightDot = FVector::DotProduct(GetActorRightVector(), AttackDirection);
+
+	FString HitDirection = "Front";
+
+	if (FMath::Abs(RightDot) > FMath::Abs(ForwardDot))
+	{
+		HitDirection = (RightDot > 0) ? "Right" : "Left";
+	}
+	else
+	{
+		HitDirection = (ForwardDot > 0) ? "Front" : "Back";
+	}
+
+	UE_LOG(LogTemp, Warning, TEXT("%s hit from %s"),
+		*GetName(),
+		*HitDirection);
+}

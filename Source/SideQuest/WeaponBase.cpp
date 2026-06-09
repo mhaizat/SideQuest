@@ -64,11 +64,20 @@ void AWeaponBase::PerformTrace()
 		
 	if (bHit && Hit.GetActor())
 	{
+		FVector AttackDirection = (Hit.GetActor()->GetActorLocation() - OwnerActor->GetActorLocation()).GetSafeNormal();
+
+		UE_LOG(LogTemp, Warning, TEXT("Attack Dir: %s"), *AttackDirection.ToString());
+
 		if (!HitActors.Contains(Hit.GetActor()))
 		{
-			HitActors.Add(Hit.GetActor());
+			IDamageInterface* Damageable = Cast<IDamageInterface>(Hit.GetActor());
+				
+			if (Damageable)
+			{
+				FVector AttackDir = (Hit.GetActor()->GetActorLocation() - OwnerActor->GetActorLocation()).GetSafeNormal();
 
-			UGameplayStatics::ApplyDamage(Hit.GetActor(), 20.f, GetOwner()->GetInstigatorController(), this, nullptr);
+				Damageable->ReceiveHit(20.f, AttackDir);
+			}
 		}
 	}
 

@@ -5,6 +5,7 @@
 #include "Kismet/KismetSystemLibrary.h"
 #include "DrawDebugHelpers.h"
 #include "Kismet/GameplayStatics.h"
+#include "DamageInterface.h"
 #include "WeaponBase.generated.h"
 
 UCLASS()
