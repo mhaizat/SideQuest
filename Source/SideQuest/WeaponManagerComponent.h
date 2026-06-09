@@ -19,6 +19,10 @@ public:
 	void EquipWeapon(int32 Index);
 	void NextWeapon();
 
+	void SetAttacking(bool bAttacking);
+
+	bool IsAttacking() const;
+
 protected:
 	virtual void BeginPlay() override;
 
@@ -32,4 +36,7 @@ protected:
 
 	void SpawnWeapon(int32 Index);
 	void DestroyCurrentWeapon();
+
+private:
+	bool bIsAttacking = false;
 };

@@ -18,7 +18,7 @@ void UWeaponManagerComponent::BeginPlay()
 
 void UWeaponManagerComponent::EquipWeapon(int32 Index)
 {
-	if (!WeaponInventory.IsValidIndex(Index)) return;
+	if (bIsAttacking || !WeaponInventory.IsValidIndex(Index)) return;
 
 	DestroyCurrentWeapon();
 	SpawnWeapon(Index);
@@ -60,5 +60,15 @@ void UWeaponManagerComponent::DestroyCurrentWeapon()
 		EquippedWeapon->Destroy();
 		EquippedWeapon = nullptr;
 	}
+}
+
+void UWeaponManagerComponent::SetAttacking(bool bAttacking)
+{
+	bIsAttacking = bAttacking;
+}
+
+bool UWeaponManagerComponent::IsAttacking() const
+{
+	return bIsAttacking;
 }
 

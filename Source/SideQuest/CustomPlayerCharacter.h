@@ -22,6 +22,8 @@ public:
 
 	UFUNCTION()
 	void AttackWindowEnd();
+	UFUNCTION()
+	void AttackFinished();
 
 	void EquipWeaponSlot1();
 	void EquipWeaponSlot2();

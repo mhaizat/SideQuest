@@ -21,21 +21,14 @@ void ACustomPlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerIn
 void ACustomPlayerCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-
-	//if (WeaponClass)
-	//{
-	//	EquippedWeapon = GetWorld()->SpawnActor<AWeaponBase>(WeaponClass);
-
-	//	if (!EquippedWeapon) return;
-
-	//	EquippedWeapon->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, TEXT("weapon")); // we will create this
-	//	EquippedWeapon->SetOwner(this);
-	//}
 }
 
 void ACustomPlayerCharacter::Attack()
 {
-	if (!AttackMontage) return;
+	if (!AttackMontage || !WeaponManager) return;
+
+	WeaponManager->SetAttacking(true);
+
 	PlayAnimMontage(AttackMontage);
 }
 
@@ -65,4 +58,14 @@ void ACustomPlayerCharacter::EquipWeaponSlot2()
 	{
 		WeaponManager->EquipWeapon(1);
 	}
+}
+
+void ACustomPlayerCharacter::AttackFinished()
+{
+	if (WeaponManager)
+	{
+		WeaponManager->SetAttacking(false);
+	}
+
+	UE_LOG(LogTemp, Warning, TEXT("Attack Finished"));
 }
