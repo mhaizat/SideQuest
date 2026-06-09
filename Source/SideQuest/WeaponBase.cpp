@@ -70,12 +70,12 @@ void AWeaponBase::PerformTrace()
 
 		if (!HitActors.Contains(Hit.GetActor()))
 		{
+			HitActors.Add(Hit.GetActor());
+
 			IDamageInterface* Damageable = Cast<IDamageInterface>(Hit.GetActor());
-				
 			if (Damageable)
 			{
 				FVector AttackDir = (Hit.GetActor()->GetActorLocation() - OwnerActor->GetActorLocation()).GetSafeNormal();
-
 				Damageable->ReceiveHit(20.f, AttackDir);
 			}
 		}
