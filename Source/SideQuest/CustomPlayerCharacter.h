@@ -6,6 +6,7 @@
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "WeaponBase.h"
+#include "WeaponManagerComponent.h"
 #include "CustomPlayerCharacter.generated.h"
 
 UCLASS()
@@ -29,6 +30,9 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	UAttributeComponent* Attributes;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	UWeaponManagerComponent* WeaponManager;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Combat")
 	UAnimMontage* AttackMontage;

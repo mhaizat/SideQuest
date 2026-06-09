@@ -3,6 +3,7 @@
 ACustomPlayerCharacter::ACustomPlayerCharacter()
 {
 	Attributes = CreateDefaultSubobject<UAttributeComponent>(TEXT("Attributes"));
+	WeaponManager = CreateDefaultSubobject<UWeaponManagerComponent>(TEXT("WeaponManager"));
 }
 
 void ACustomPlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -19,15 +20,15 @@ void ACustomPlayerCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
-	if (WeaponClass)
-	{
-		EquippedWeapon = GetWorld()->SpawnActor<AWeaponBase>(WeaponClass);
+	//if (WeaponClass)
+	//{
+	//	EquippedWeapon = GetWorld()->SpawnActor<AWeaponBase>(WeaponClass);
 
-		if (!EquippedWeapon) return;
+	//	if (!EquippedWeapon) return;
 
-		EquippedWeapon->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, TEXT("weapon")); // we will create this
-		EquippedWeapon->SetOwner(this);
-	}
+	//	EquippedWeapon->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, TEXT("weapon")); // we will create this
+	//	EquippedWeapon->SetOwner(this);
+	//}
 }
 
 void ACustomPlayerCharacter::Attack()
