@@ -25,12 +25,9 @@ void AWeaponBase::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	Super::Tick(DeltaTime);
+	if (!bCanTrace) return;
 
-	if (bCanTrace)
-	{
-		PerformTrace();
-	}
+	PerformTrace();
 }
 
 void AWeaponBase::StartTrace()
@@ -73,11 +70,10 @@ void AWeaponBase::PerformTrace()
 			HitActors.Add(Hit.GetActor());
 
 			IDamageInterface* Damageable = Cast<IDamageInterface>(Hit.GetActor());
-			if (Damageable)
-			{
-				FVector AttackDir = (Hit.GetActor()->GetActorLocation() - OwnerActor->GetActorLocation()).GetSafeNormal();
-				Damageable->ReceiveHit(20.f, AttackDir);
-			}
+			if (!Damageable) return;
+
+			FVector AttackDir = (Hit.GetActor()->GetActorLocation() - OwnerActor->GetActorLocation()).GetSafeNormal();
+			Damageable->ReceiveHit(20.f, AttackDir);
 		}
 	}
 

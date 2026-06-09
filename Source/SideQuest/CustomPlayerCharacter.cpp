@@ -2,7 +2,6 @@
 
 ACustomPlayerCharacter::ACustomPlayerCharacter()
 {
-	//GetMesh()->SetupAttachment(GetCapsuleComponent());
 	Attributes = CreateDefaultSubobject<UAttributeComponent>(TEXT("Attributes"));
 }
 
@@ -34,26 +33,17 @@ void ACustomPlayerCharacter::BeginPlay()
 void ACustomPlayerCharacter::Attack()
 {
 	if (!AttackMontage) return;
-
 	PlayAnimMontage(AttackMontage);
 }
 
 void ACustomPlayerCharacter::AttackWindowStart()
 {
-	if (EquippedWeapon)
-	{
-		EquippedWeapon->StartTrace();
-
-		UE_LOG(LogTemp, Warning, TEXT("AttackWindowStart FIRED"));
-	}
+	if (!EquippedWeapon) return;
+	EquippedWeapon->StartTrace();
 }
 
 void ACustomPlayerCharacter::AttackWindowEnd()
 {
-	if (EquippedWeapon)
-	{
-		EquippedWeapon->StopTrace();
-
-		UE_LOG(LogTemp, Warning, TEXT("AttackWindowEnd FIRED"));
-	}
+	if (!EquippedWeapon) return;
+	EquippedWeapon->StopTrace();
 }

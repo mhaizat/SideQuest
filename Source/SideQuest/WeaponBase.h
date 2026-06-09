@@ -16,19 +16,19 @@ class SIDEQUEST_API AWeaponBase : public AActor
 public:	
 	AWeaponBase();
 
-	UPROPERTY(VisibleAnywhere)
-	USceneComponent* Root;
-	
 	bool IsTracable() { return bCanTrace; }
 
 	void StartTrace();
 	void StopTrace();
-	void PerformTrace();
 
 	virtual void Tick(float DeltaTime) override;
 
 protected:
 	virtual void BeginPlay() override;
+	void PerformTrace();
+
+	UPROPERTY(VisibleAnywhere)
+	USceneComponent* Root;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	UStaticMeshComponent* WeaponMesh;

@@ -19,41 +19,28 @@ protected:
 	virtual void BeginPlay() override;
 
 public:
-
-	// =========================
-	// HEALTH
-	// =========================
-
+	//! NOTE: HEALTH
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Attributes")
 	float Health = 100.f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Attributes")
 	float MaxHealth = 100.f;
 
-	// =========================
-	// STAMINA
-	// =========================
-
+	//! NOTE: STAMINA
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Attributes")
 	float Stamina = 100.f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Attributes")
 	float MaxStamina = 100.f;
 
-	// =========================
-	// EVENTS
-	// =========================
-
+	//! NOTE: EVENTS
 	UPROPERTY(BlueprintAssignable, Category = "Events")
 	FOnHealthChanged OnHealthChanged;
 
 	UPROPERTY(BlueprintAssignable)
 	FOnDeath OnDeath;
 
-	// =========================
-	// FUNCTIONS
-	// =========================
-
+	//! NOTE: FUNCTIONS
 	UFUNCTION(BlueprintCallable)
 	void TakeDamage(float Damage);
 
