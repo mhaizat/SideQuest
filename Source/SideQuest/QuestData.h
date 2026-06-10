@@ -18,5 +18,11 @@ struct FQuestData
 	int32 RequiredAmount = 1;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	FName TargetItemID;
+	FName ObjectiveId;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	int32 CurrentAmount = 0;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	bool bCompleted = false;
 };

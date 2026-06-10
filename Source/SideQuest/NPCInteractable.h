@@ -3,7 +3,6 @@
 #include "CoreMinimal.h"
 #include "NPCBase.h"
 #include "Components/SphereComponent.h"
-#include "CustomPlayerCharacter.h"
 #include "NPCInteractable.generated.h"
 
 UCLASS()

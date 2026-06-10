@@ -1,4 +1,5 @@
 #include "NPCInteractable.h"
+#include "CustomPlayerCharacter.h"
 
 ANPCInteractable::ANPCInteractable()
 {
