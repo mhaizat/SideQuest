@@ -19,8 +19,6 @@ public:
 	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;
 	virtual void ReceiveHit(const FHitData& HitData) override;
 
-	//void ReceiveHit(float Damage, FVector AttackDirection);
-
 	UFUNCTION()
 	void OnHitReact();
 

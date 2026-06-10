@@ -28,9 +28,7 @@ void ANPCInteractable::BeginPlay()
 	InteractionSphere->OnComponentEndOverlap.AddDynamic(this, &ANPCInteractable::OnPlayerExit);
 }
 
-void ANPCInteractable::OnPlayerEnter(UPrimitiveComponent* OverlappedComp, AActor* OtherActor,
-	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex,
-	bool bFromSweep, const FHitResult& SweepResult)
+void ANPCInteractable::OnPlayerEnter(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 	ACustomPlayerCharacter* Player = Cast<ACustomPlayerCharacter>(OtherActor);
 
@@ -41,8 +39,7 @@ void ANPCInteractable::OnPlayerEnter(UPrimitiveComponent* OverlappedComp, AActor
 	}
 }
 
-void ANPCInteractable::OnPlayerExit(UPrimitiveComponent* OverlappedComp, AActor* OtherActor,
-	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
+void ANPCInteractable::OnPlayerExit(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
 	ACustomPlayerCharacter* Player = Cast<ACustomPlayerCharacter>(OtherActor);
 

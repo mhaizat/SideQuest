@@ -34,10 +34,7 @@ public:
 	void SetCurrentNPC(ANPCInteractable* NPC);
 	void ClearCurrentNPC(ANPCInteractable* NPC);
 
-	UQuestManagerComponent* GetQuestManager() const
-	{
-		return QuestManager;
-	}
+	UQuestManagerComponent* GetQuestManager() const { return QuestManager; }
 
 protected:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
@@ -74,14 +71,9 @@ protected:
 	class ANPCInteractable* CurrentNPC = nullptr;
 
 	UFUNCTION()
-	void OnInteractBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor,
-		UPrimitiveComponent* OtherComp, int32 OtherBodyIndex,
-		bool bFromSweep, const FHitResult& SweepResult);
-
+	void OnInteractBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 	UFUNCTION()
-	void OnInteractEndOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor,
-		UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
-
+	void OnInteractEndOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
 	UFUNCTION()
 	void Interact();
 };

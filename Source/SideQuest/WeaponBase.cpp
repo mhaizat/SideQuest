@@ -32,8 +32,6 @@ void AWeaponBase::Tick(float DeltaTime)
 
 void AWeaponBase::StartTrace()
 {
-	UE_LOG(LogTemp, Warning, TEXT("TRACE STARTED"));
-
 	HitActors.Empty();
 	bCanTrace = true;
 }
@@ -45,11 +43,7 @@ void AWeaponBase::StopTrace()
 
 void AWeaponBase::PerformTrace()
 {
-	UE_LOG(LogTemp, Warning, TEXT("TRACE RUNNING 1"));
-	
 	if (!bCanTrace) return;
-
-	UE_LOG(LogTemp, Warning, TEXT("TRACE RUNNING 2"));
 
 	AActor* OwnerActor = GetOwner();
 	if (!OwnerActor) return;

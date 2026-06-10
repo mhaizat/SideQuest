@@ -5,6 +5,8 @@ ACustomPlayerCharacter::ACustomPlayerCharacter()
 	Attributes = CreateDefaultSubobject<UAttributeComponent>(TEXT("Attributes"));
 	WeaponManager = CreateDefaultSubobject<UWeaponManagerComponent>(TEXT("WeaponManager"));
 
+	QuestManager = CreateDefaultSubobject<UQuestManagerComponent>(TEXT("QuestManager"));
+
 	InteractionSphere = CreateDefaultSubobject<USphereComponent>(TEXT("InteractionSphere"));
 	if (!InteractionSphere) return;
 
@@ -18,7 +20,6 @@ ACustomPlayerCharacter::ACustomPlayerCharacter()
 	InteractionSphere->SetCollisionResponseToChannel(ECC_WorldDynamic, ECR_Overlap);
 	InteractionSphere->SetCollisionResponseToChannel(ECC_WorldStatic, ECR_Overlap);
 
-	QuestManager = CreateDefaultSubobject<UQuestManagerComponent>(TEXT("QuestManager"));
 }
 
 void ACustomPlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -69,8 +70,6 @@ void ACustomPlayerCharacter::AttackWindowStart()
 	{
 		return;
 	}
-
-	UE_LOG(LogTemp, Warning, TEXT("AttackWindowStart Started"));
 
 	CurrentWeapon->StartTrace();
 }

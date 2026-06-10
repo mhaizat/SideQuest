@@ -3,6 +3,7 @@
 #include "CoreMinimal.h"
 #include "NPCBase.h"
 #include "Components/SphereComponent.h"
+#include "CustomPlayerCharacter.h"
 #include "NPCInteractable.generated.h"
 
 UCLASS()
@@ -28,12 +29,7 @@ protected:
 	FText DialogueText;
 
 	UFUNCTION()
-	void OnPlayerEnter(UPrimitiveComponent* OverlappedComp, AActor* OtherActor,
-		UPrimitiveComponent* OtherComp, int32 OtherBodyIndex,
-		bool bFromSweep, const FHitResult& SweepResult);
-
+	void OnPlayerEnter(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 	UFUNCTION()
-	void OnPlayerExit(UPrimitiveComponent* OverlappedComp, AActor* OtherActor,
-		UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
-
+	void OnPlayerExit(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
 };

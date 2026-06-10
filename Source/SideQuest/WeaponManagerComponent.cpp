@@ -39,7 +39,6 @@ void UWeaponManagerComponent::EquipWeapon(int32 Index)
 	if (bIsAttacking) return;
 	if (!SpawnedWeapons.IsValidIndex(Index)) return;
 
-	// hide old weapon
 	if (EquippedWeapon)
 	{
 		EquippedWeapon->SetActorHiddenInGame(true);
@@ -49,7 +48,6 @@ void UWeaponManagerComponent::EquipWeapon(int32 Index)
 	CurrentWeaponIndex = Index;
 	EquippedWeapon = SpawnedWeapons[Index];
 
-	// show new weapon
 	EquippedWeapon->SetActorHiddenInGame(false);
 }
 

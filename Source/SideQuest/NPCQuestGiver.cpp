@@ -5,16 +5,10 @@ void ANPCQuestGiver::Interact(AActor* Interactor)
     Super::Interact(Interactor);
 
     ACustomPlayerCharacter* Player = Cast<ACustomPlayerCharacter>(Interactor);
-    if (!Player)
-    {
-        return;
-    }
+    if (!Player)return;
 
     UQuestManagerComponent* QuestManager = Player->GetQuestManager();
-    if (!QuestManager)
-    {
-        return;
-    }
+    if (!QuestManager) return;
 
     QuestManager->AddQuest(QuestData);
 }
