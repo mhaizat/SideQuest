@@ -34,10 +34,9 @@ protected:
 	UPROPERTY()
 	AWeaponBase* EquippedWeapon;
 
-	int32 CurrentWeaponIndex = 0;
+	TArray<AWeaponBase*> SpawnedWeapons;
 
-	void SpawnWeapon(int32 Index);
-	void DestroyCurrentWeapon();
+	int32 CurrentWeaponIndex = 0;
 
 private:
 	bool bIsAttacking = false;

@@ -7,6 +7,8 @@
 #include "EnhancedInputSubsystems.h"
 #include "WeaponBase.h"
 #include "WeaponManagerComponent.h"
+#include "Components/SphereComponent.h"
+#include "NPCInteractable.h"
 #include "CustomPlayerCharacter.generated.h"
 
 UCLASS()
@@ -28,6 +30,9 @@ public:
 	void EquipWeaponSlot1();
 	void EquipWeaponSlot2();
 
+	void SetCurrentNPC(ANPCInteractable* NPC);
+	void ClearCurrentNPC(ANPCInteractable* NPC);
+
 protected:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	virtual void BeginPlay() override;
@@ -46,14 +51,28 @@ protected:
 	UInputAction* AttackAction;
 
 	UPROPERTY(EditAnywhere, Category = "Input")
-	UInputAction* Slot1Action;
-
-	UPROPERTY(EditAnywhere, Category = "Input")
-	UInputAction* Slot2Action;
+	class UInputAction* InteractAction;
 
 	UPROPERTY()
 	AWeaponBase* EquippedWeapon;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Combat")
 	TSubclassOf<AWeaponBase> WeaponClass;
+
+	UPROPERTY(VisibleAnywhere)
+	class USphereComponent* InteractionSphere;
+
+	class ANPCInteractable* CurrentNPC = nullptr;
+
+	UFUNCTION()
+	void OnInteractBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor,
+		UPrimitiveComponent* OtherComp, int32 OtherBodyIndex,
+		bool bFromSweep, const FHitResult& SweepResult);
+
+	UFUNCTION()
+	void OnInteractEndOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor,
+		UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
+
+	UFUNCTION()
+	void Interact();
 };

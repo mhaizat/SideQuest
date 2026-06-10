@@ -10,7 +10,25 @@ void UWeaponManagerComponent::BeginPlay()
 {
 	Super::BeginPlay();
 
-	//if (WeaponInventory.Num() > 0)
+	ACharacter* CharacterOwner = Cast<ACharacter>(GetOwner());
+	if (!CharacterOwner) return;
+
+	for (TSubclassOf<AWeaponBase> WeaponClass : WeaponInventory)
+	{
+		if (!WeaponClass) continue;
+
+		AWeaponBase* NewWeapon = GetWorld()->SpawnActor<AWeaponBase>(WeaponClass, CharacterOwner->GetActorTransform());
+		if (!NewWeapon) continue;
+
+		NewWeapon->AttachToComponent(CharacterOwner->GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, TEXT("weapon"));
+		NewWeapon->SetActorHiddenInGame(true);
+		NewWeapon->SetActorEnableCollision(false);
+
+		SpawnedWeapons.Add(NewWeapon);
+	}
+
+	//// optional: auto-equip first weapon
+	//if (SpawnedWeapons.IsValidIndex(0))
 	//{
 	//	EquipWeapon(0);
 	//}
@@ -18,48 +36,29 @@ void UWeaponManagerComponent::BeginPlay()
 
 void UWeaponManagerComponent::EquipWeapon(int32 Index)
 {
-	if (bIsAttacking || !WeaponInventory.IsValidIndex(Index)) return;
+	if (bIsAttacking) return;
+	if (!SpawnedWeapons.IsValidIndex(Index)) return;
 
-	DestroyCurrentWeapon();
-	SpawnWeapon(Index);
+	// hide old weapon
+	if (EquippedWeapon)
+	{
+		EquippedWeapon->SetActorHiddenInGame(true);
+		EquippedWeapon->StopTrace();
+	}
 
 	CurrentWeaponIndex = Index;
+	EquippedWeapon = SpawnedWeapons[Index];
+
+	// show new weapon
+	EquippedWeapon->SetActorHiddenInGame(false);
 }
 
 void UWeaponManagerComponent::NextWeapon()
 {
-	if (WeaponInventory.Num() == 0) return;
+	if (SpawnedWeapons.Num() == 0) return;
 
-	int32 NextIndex = (CurrentWeaponIndex + 1) % WeaponInventory.Num();
+	int32 NextIndex = (CurrentWeaponIndex + 1) % SpawnedWeapons.Num();
 	EquipWeapon(NextIndex);
-}
-
-void UWeaponManagerComponent::SpawnWeapon(int32 Index)
-{
-	AActor* Owner = GetOwner();
-	if (!Owner) return;
-
-	FActorSpawnParameters Params;
-	Params.Owner = Owner;
-	Params.Instigator = Owner->GetInstigator();
-
-	EquippedWeapon = GetWorld()->SpawnActor<AWeaponBase>(WeaponInventory[Index], Owner->GetActorTransform(), Params);
-	if (!EquippedWeapon) return;
-
-	//! NOTE: attach to character mesh
-	ACharacter* CharacterOwner = Cast<ACharacter>(Owner);
-	if (!CharacterOwner) return;
-
-	EquippedWeapon->AttachToComponent(CharacterOwner->GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, TEXT("weapon"));
-}
-
-void UWeaponManagerComponent::DestroyCurrentWeapon()
-{
-	if (EquippedWeapon)
-	{
-		EquippedWeapon->Destroy();
-		EquippedWeapon = nullptr;
-	}
 }
 
 void UWeaponManagerComponent::SetAttacking(bool bAttacking)
