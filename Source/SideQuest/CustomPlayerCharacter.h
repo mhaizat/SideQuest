@@ -34,6 +34,11 @@ public:
 	void SetCurrentNPC(ANPCInteractable* NPC);
 	void ClearCurrentNPC(ANPCInteractable* NPC);
 
+	UQuestManagerComponent* GetQuestManager() const
+	{
+		return QuestManager;
+	}
+
 protected:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	virtual void BeginPlay() override;

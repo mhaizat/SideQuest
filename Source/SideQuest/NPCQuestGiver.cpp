@@ -2,11 +2,19 @@
 
 void ANPCQuestGiver::Interact(AActor* Interactor)
 {
-	Super::Interact(Interactor);
+    Super::Interact(Interactor);
 
-	if (bQuestGiven) return;
+    ACustomPlayerCharacter* Player = Cast<ACustomPlayerCharacter>(Interactor);
+    if (!Player)
+    {
+        return;
+    }
 
-	bQuestGiven = true;
+    UQuestManagerComponent* QuestManager = Player->GetQuestManager();
+    if (!QuestManager)
+    {
+        return;
+    }
 
-	UE_LOG(LogTemp, Warning, TEXT("Quest Started: %s"), *QuestID.ToString());
+    QuestManager->AddQuest(QuestData);
 }

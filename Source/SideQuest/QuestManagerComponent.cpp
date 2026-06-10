@@ -12,11 +12,19 @@ void UQuestManagerComponent::BeginPlay()
 
 void UQuestManagerComponent::AddQuest(const FQuestData& Quest)
 {
-	if (HasQuest(Quest.QuestID)) return;
+    if (HasQuest(Quest.QuestID))
+    {
+        UE_LOG(LogTemp, Warning,
+            TEXT("Quest already active"));
 
-	ActiveQuests.Add(Quest);
+        return;
+    }
 
-	UE_LOG(LogTemp, Warning, TEXT("Quest Added: %s"), *Quest.QuestName.ToString());
+    ActiveQuests.Add(Quest);
+
+    UE_LOG(LogTemp, Warning,
+        TEXT("Quest Accepted: %s"),
+        *Quest.QuestID.ToString());
 }
 
 bool UQuestManagerComponent::HasQuest(FName QuestID) const

@@ -2,6 +2,8 @@
 
 #include "CoreMinimal.h"
 #include "NPCInteractable.h"
+#include "QuestData.h"
+#include "CustomPlayerCharacter.h"
 #include "NPCQuestGiver.generated.h"
 
 UCLASS()
@@ -19,4 +21,7 @@ protected:
 
 	UPROPERTY(EditAnywhere)
 	bool bQuestGiven = false;
+
+	UPROPERTY(EditAnywhere, Category = "Quest")
+	FQuestData QuestData;
 };

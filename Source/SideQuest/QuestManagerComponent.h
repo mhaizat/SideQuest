@@ -15,7 +15,7 @@ public:
 
 	void AddQuest(const FQuestData& Quest);
 
-	void AddProgress(FName ItemID, int32 Amount);
+	//void AddProgress(FName ItemID, int32 Amount);
 
 	bool HasQuest(FName QuestID) const;
 
