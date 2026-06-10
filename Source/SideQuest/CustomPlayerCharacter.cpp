@@ -17,6 +17,8 @@ ACustomPlayerCharacter::ACustomPlayerCharacter()
 	InteractionSphere->SetCollisionResponseToChannel(ECC_Pawn, ECR_Overlap);
 	InteractionSphere->SetCollisionResponseToChannel(ECC_WorldDynamic, ECR_Overlap);
 	InteractionSphere->SetCollisionResponseToChannel(ECC_WorldStatic, ECR_Overlap);
+
+	QuestManager = CreateDefaultSubobject<UQuestManagerComponent>(TEXT("QuestManager"));
 }
 
 void ACustomPlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)

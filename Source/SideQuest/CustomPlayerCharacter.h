@@ -9,6 +9,7 @@
 #include "WeaponManagerComponent.h"
 #include "Components/SphereComponent.h"
 #include "NPCInteractable.h"
+#include "QuestManagerComponent.h"
 #include "CustomPlayerCharacter.generated.h"
 
 UCLASS()
@@ -43,6 +44,9 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	UWeaponManagerComponent* WeaponManager;
+
+	UPROPERTY(VisibleAnywhere)
+	UQuestManagerComponent* QuestManager;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Combat")
 	UAnimMontage* AttackMontage;
