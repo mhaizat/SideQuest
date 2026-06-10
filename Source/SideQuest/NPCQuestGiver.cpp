@@ -5,28 +5,28 @@ void ANPCQuestGiver::Interact(AActor* Interactor)
 	ACustomPlayerCharacter* Player = Cast<ACustomPlayerCharacter>(Interactor);
 	if (!Player) return;
 
-	UQuestManagerComponent* QM = Player->GetQuestManager();
-	if (!QM) return;
+	UQuestManagerComponent* QuestManager = Player->GetQuestManager();
+	if (!QuestManager) return;
 	
 	const FName QuestID = QuestData.QuestID;
 
-	// CASE 1: quest not started
-	if (!QM->HasQuest(QuestID))
+	//! NOTE: CASE 1: quest not started
+	if (!QuestManager->HasQuest(QuestID))
 	{
-		QM->StartQuest(QuestID);
+		QuestManager->StartQuest(QuestID);
 		UE_LOG(LogTemp, Warning, TEXT("Quest Started: %s"), *QuestID.ToString());
 		return;
 	}
 
-	// CASE 2: quest completed
-	if (QM->IsQuestCompleted(QuestID))
+	//! NOTE: CASE 2: quest completed
+	if (QuestManager->IsQuestCompleted(QuestID))
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Quest Turned In: %s"), *QuestID.ToString());
 
-		QM->CompleteQuest(QuestID); // reward + cleanup
+		QuestManager->CompleteQuest(QuestID); // reward + cleanup
 		return;
 	}
 
-	// CASE 3: in progress
+	//! NOTE: CASE 3: in progress
 	UE_LOG(LogTemp, Warning, TEXT("Quest in progress..."));
 }

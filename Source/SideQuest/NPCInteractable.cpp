@@ -7,10 +7,8 @@ ANPCInteractable::ANPCInteractable()
 	SetRootComponent(InteractionSphere);
 
 	InteractionSphere->InitSphereRadius(150.f);
-
 	InteractionSphere->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
 	InteractionSphere->SetGenerateOverlapEvents(true);
-
 	InteractionSphere->SetCollisionObjectType(ECC_WorldDynamic);
 	InteractionSphere->SetCollisionResponseToAllChannels(ECR_Ignore);
 	InteractionSphere->SetCollisionResponseToChannel(ECC_Pawn, ECR_Overlap);

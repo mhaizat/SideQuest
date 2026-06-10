@@ -68,38 +68,21 @@ void UQuestManagerComponent::AddProgress(FName ItemID, int32 Amount)
 {
 	for (FQuestData& Quest : ActiveQuests)
 	{
-		// ❌ ignore completed quests
-		if (Quest.bCompleted)
-		{
-			continue;
-		}
-
-		// ❌ only relevant quests
-		if (Quest.ObjectiveId != ItemID)
-		{
-			continue;
-		}
+		if (Quest.bCompleted || Quest.ObjectiveId != ItemID) continue;
 
 		Quest.CurrentAmount += Amount;
 
-		UE_LOG(LogTemp, Warning,
-			TEXT("%s Progress %d/%d"),
-			*Quest.QuestID.ToString(),
-			Quest.CurrentAmount,
-			Quest.RequiredAmount);
-
+		UE_LOG(LogTemp, Warning, TEXT("%s Progress %d/%d"), *Quest.QuestID.ToString(), Quest.CurrentAmount, Quest.RequiredAmount);
+			
 		if (Quest.CurrentAmount >= Quest.RequiredAmount)
 		{
 			Quest.bCompleted = true;
 
 			CompletedQuests.AddUnique(Quest.QuestID);
 
-			UE_LOG(LogTemp, Warning,
-				TEXT("QUEST COMPLETE: %s"),
-				*Quest.QuestID.ToString());
+			UE_LOG(LogTemp, Warning, TEXT("QUEST COMPLETE: %s"), *Quest.QuestID.ToString());
 		}
 
-		// IMPORTANT: stop after matching quest
 		return;
 	}
 }
@@ -108,10 +91,7 @@ bool UQuestManagerComponent::HasRelevantQuest(FName ItemID) const
 {
 	for (const FQuestData& Quest : ActiveQuests)
 	{
-		if (!Quest.bCompleted && Quest.ObjectiveId == ItemID)
-		{
-			return true;
-		}
+		if (!Quest.bCompleted && Quest.ObjectiveId == ItemID) return true;
 	}
 
 	return false;

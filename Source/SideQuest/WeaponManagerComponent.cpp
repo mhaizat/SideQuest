@@ -26,12 +26,6 @@ void UWeaponManagerComponent::BeginPlay()
 
 		SpawnedWeapons.Add(NewWeapon);
 	}
-
-	//// optional: auto-equip first weapon
-	//if (SpawnedWeapons.IsValidIndex(0))
-	//{
-	//	EquipWeapon(0);
-	//}
 }
 
 void UWeaponManagerComponent::EquipWeapon(int32 Index)
