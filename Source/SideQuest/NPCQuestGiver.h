@@ -14,10 +14,6 @@ public:
 	virtual void Interact(AActor* Interactor) override;
 
 protected:
-
-	UPROPERTY(EditAnywhere)
-	FName QuestID;
-
 	UPROPERTY(EditAnywhere)
 	bool bQuestGiven = false;
 

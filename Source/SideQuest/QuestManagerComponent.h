@@ -17,9 +17,12 @@ public:
 
 	void AddProgress(FName ItemID, int32 Amount = 1);
 
-	bool HasQuest(FName QuestID) const;
-
 	bool HasRelevantQuest(FName ItemID) const;
+
+	bool HasQuest(FName QuestID) const;
+	bool IsQuestCompleted(FName QuestID) const;
+	void StartQuest(FName QuestID);
+	void CompleteQuest(FName QuestID);
 
 protected:
 	virtual void BeginPlay() override;

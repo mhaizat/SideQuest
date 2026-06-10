@@ -42,22 +42,12 @@ void AQuestItem::BeginPlay()
 
 void AQuestItem::OnOverlapBegin(
 	UPrimitiveComponent* OverlappedComponent,
-	AActor* OtherActor,
-	UPrimitiveComponent* OtherComp,
-	int32 OtherBodyIndex,
-	bool bFromSweep, const FHitResult& SweepResult)
-	
+	AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	ACustomPlayerCharacter* Player =
-		Cast<ACustomPlayerCharacter>(OtherActor);
+	ACustomPlayerCharacter* Player = Cast<ACustomPlayerCharacter>(OtherActor);
+	if (!Player) return;
 
-	if (!Player)
-	{
-		return;
-	}
-
-	UQuestManagerComponent* QuestManager =
-		Player->GetQuestManager();
+	UQuestManagerComponent* QuestManager = Player->GetQuestManager();
 
 	if (!QuestManager)
 	{
