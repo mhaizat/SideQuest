@@ -14,17 +14,27 @@ ANPCInteractable::ANPCInteractable()
 	InteractionSphere->SetCollisionResponseToChannel(ECC_Pawn, ECR_Overlap);
 }
 
+void ANPCInteractable::BeginPlay()
+{
+	Super::BeginPlay();
+
+	InteractionSphere->OnComponentBeginOverlap.AddDynamic(this, &ANPCInteractable::HandlePlayerEnter);
+	InteractionSphere->OnComponentEndOverlap.AddDynamic(this, &ANPCInteractable::HandlePlayerExit);
+}
+
 void ANPCInteractable::Interact(AActor* Interactor)
 {
 	UE_LOG(LogTemp, Warning, TEXT("Base NPC Interaction"));
 }
 
-void ANPCInteractable::BeginPlay()
+void ANPCInteractable::HandlePlayerEnter(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	Super::BeginPlay();
+	OnPlayerEnter(OverlappedComp, OtherActor, OtherComp, OtherBodyIndex, bFromSweep, SweepResult);
+}
 
-	InteractionSphere->OnComponentBeginOverlap.AddDynamic(this, &ANPCInteractable::OnPlayerEnter);
-	InteractionSphere->OnComponentEndOverlap.AddDynamic(this, &ANPCInteractable::OnPlayerExit);
+void ANPCInteractable::HandlePlayerExit(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
+{
+	OnPlayerExit(OverlappedComp, OtherActor, OtherComp, OtherBodyIndex);
 }
 
 void ANPCInteractable::OnPlayerEnter(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)

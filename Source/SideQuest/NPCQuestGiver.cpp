@@ -1,32 +1,70 @@
-#include "NPCQuestGiver.h"
+﻿#include "NPCQuestGiver.h"
+#include "QuestManagerComponent.h"
+#include "CustomPlayerCharacter.h"
+#include "UIManagerComponent.h"
+
+void ANPCQuestGiver::BeginPlay()
+{
+	Super::BeginPlay();
+}
 
 void ANPCQuestGiver::Interact(AActor* Interactor)
 {
+	Super::Interact(Interactor);
+
 	ACustomPlayerCharacter* Player = Cast<ACustomPlayerCharacter>(Interactor);
 	if (!Player) return;
 
 	UQuestManagerComponent* QuestManager = Player->GetQuestManager();
 	if (!QuestManager) return;
-	
+
+	UUIManagerComponent* UIManager = Player->GetUIManager();
+	if (!UIManager) return;
+
 	const FName QuestID = QuestData.QuestID;
 
-	//! NOTE: CASE 1: quest not started
+	if (QuestManager->IsQuestCompleted(QuestID))
+	{
+		QuestManager->CompleteQuest(QuestID);
+		bQuestGiven = false;
+
+		UE_LOG(LogTemp, Warning, TEXT("Quest Turned In: %s"), *QuestID.ToString());
+		return;
+	}
+
+	if (bQuestGiven)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Quest already given, in progress..."));
+		return;
+	}
+
 	if (!QuestManager->HasQuest(QuestID))
 	{
-		QuestManager->StartQuest(QuestID);
+		QuestManager->StartQuest(QuestData);
+		bQuestGiven = true;
+
+		UIManager->SetUIState(EUIState::Quest);
+
+		UQuestTrackerWidget* Widget = Cast<UQuestTrackerWidget>(UIManager->GetWidget("Quest"));
+		if (!Widget) return;
+
+		Widget->InitializeQuestDisplay(QuestData);
+
 		UE_LOG(LogTemp, Warning, TEXT("Quest Started: %s"), *QuestID.ToString());
 		return;
 	}
+}
 
-	//! NOTE: CASE 2: quest completed
-	if (QuestManager->IsQuestCompleted(QuestID))
-	{
-		UE_LOG(LogTemp, Warning, TEXT("Quest Turned In: %s"), *QuestID.ToString());
+void ANPCQuestGiver::OnPlayerEnter(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	Super::OnPlayerEnter(OverlappedComp, OtherActor, OtherComp, OtherBodyIndex, bFromSweep, SweepResult);
 
-		QuestManager->CompleteQuest(QuestID); // reward + cleanup
-		return;
-	}
+	UE_LOG(LogTemp, Warning, TEXT("Quest NPC Enter"));
+}
 
-	//! NOTE: CASE 3: in progress
-	UE_LOG(LogTemp, Warning, TEXT("Quest in progress..."));
+void ANPCQuestGiver::OnPlayerExit(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
+{
+	Super::OnPlayerExit(OverlappedComp, OtherActor, OtherComp, OtherBodyIndex);
+
+	UE_LOG(LogTemp, Warning, TEXT("Quest NPC Exit"));
 }

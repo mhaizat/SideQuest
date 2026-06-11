@@ -4,7 +4,7 @@ ACustomPlayerCharacter::ACustomPlayerCharacter()
 {
 	Attributes = CreateDefaultSubobject<UAttributeComponent>(TEXT("Attributes"));
 	WeaponManager = CreateDefaultSubobject<UWeaponManagerComponent>(TEXT("WeaponManager"));
-
+	UIManager = CreateDefaultSubobject<UUIManagerComponent>(TEXT("UIManager"));
 	QuestManager = CreateDefaultSubobject<UQuestManagerComponent>(TEXT("QuestManager"));
 
 	InteractionSphere = CreateDefaultSubobject<USphereComponent>(TEXT("InteractionSphere"));
@@ -19,7 +19,6 @@ ACustomPlayerCharacter::ACustomPlayerCharacter()
 	InteractionSphere->SetCollisionResponseToChannel(ECC_Pawn, ECR_Overlap);
 	InteractionSphere->SetCollisionResponseToChannel(ECC_WorldDynamic, ECR_Overlap);
 	InteractionSphere->SetCollisionResponseToChannel(ECC_WorldStatic, ECR_Overlap);
-
 }
 
 void ACustomPlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -150,6 +149,7 @@ void ACustomPlayerCharacter::Interact()
 void ACustomPlayerCharacter::SetCurrentNPC(ANPCInteractable* NPC)
 {
 	CurrentNPC = NPC;
+
 }
 
 void ACustomPlayerCharacter::ClearCurrentNPC(ANPCInteractable* NPC)

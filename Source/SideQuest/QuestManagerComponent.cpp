@@ -36,27 +36,20 @@ bool UQuestManagerComponent::HasQuest(FName QuestID) const
 	return false;
 }
 
-void UQuestManagerComponent::StartQuest(FName QuestID)
+void UQuestManagerComponent::StartQuest(const FQuestData& QuestData)
 {
-	if (HasQuest(QuestID) || IsQuestCompleted(QuestID))
+	if (HasQuest(QuestData.QuestID) || IsQuestCompleted(QuestData.QuestID))
 	{
 		return;
 	}
 
-	FQuestData NewQuest;
-	NewQuest.QuestID = QuestID;
+	FQuestData NewQuest = QuestData;
 	NewQuest.CurrentAmount = 0;
 	NewQuest.bCompleted = false;
 
-	NewQuest.ObjectiveId = QuestID;
-
-	// IMPORTANT:
-	// You should normally load ObjectiveID + RequiredAmount from a data table later
-	// For now we assume QuestID == ObjectiveID OR you set it manually elsewhere
-
 	ActiveQuests.Add(NewQuest);
 
-	UE_LOG(LogTemp, Warning, TEXT("Quest Started: %s"), *QuestID.ToString());
+	UE_LOG(LogTemp, Warning, TEXT("Quest Started: %s"), *QuestData.QuestID.ToString());
 }
 
 bool UQuestManagerComponent::IsQuestCompleted(FName QuestID) const
@@ -80,8 +73,18 @@ void UQuestManagerComponent::AddProgress(FName ItemID, int32 Amount)
 
 			CompletedQuests.AddUnique(Quest.QuestID);
 
+			ActiveQuests.RemoveAll([&](const FQuestData& Q)
+			{
+				return Q.QuestID == Quest.QuestID;
+			});
+
 			UE_LOG(LogTemp, Warning, TEXT("QUEST COMPLETE: %s"), *Quest.QuestID.ToString());
 		}
+
+		OnQuestUpdated.Broadcast(Quest);
+
+		UE_LOG(LogTemp, Warning, TEXT("ItemID: '%s'"), *ItemID.ToString());
+		UE_LOG(LogTemp, Warning, TEXT("Quest Objective: '%s'"), *Quest.ObjectiveId.ToString());
 
 		return;
 	}
@@ -91,9 +94,14 @@ bool UQuestManagerComponent::HasRelevantQuest(FName ItemID) const
 {
 	for (const FQuestData& Quest : ActiveQuests)
 	{
-		if (!Quest.bCompleted && Quest.ObjectiveId == ItemID) return true;
+		if (!Quest.bCompleted && Quest.ObjectiveId == ItemID)
+		{
+			UE_LOG(LogTemp, Warning, TEXT("Has Quest"));
+			return true;
+		}
 	}
 
+	UE_LOG(LogTemp, Warning, TEXT("Doesnt have Quest"));
 	return false;
 }
 

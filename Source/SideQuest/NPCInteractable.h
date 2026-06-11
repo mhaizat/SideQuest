@@ -9,14 +9,14 @@ UCLASS()
 class SIDEQUEST_API ANPCInteractable : public ANPCBase
 {
 	GENERATED_BODY()
-	
+
 public:
 	ANPCInteractable();
 
 	virtual void Interact(AActor* Interactor);
 
 	UPROPERTY(VisibleAnywhere)
-	class USphereComponent* InteractionSphere;
+	USphereComponent* InteractionSphere;
 
 protected:
 	virtual void BeginPlay() override;
@@ -27,8 +27,13 @@ protected:
 	UPROPERTY(EditAnywhere)
 	FText DialogueText;
 
+	// Delegate handlers (bound to overlap events)
 	UFUNCTION()
-	void OnPlayerEnter(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+	void HandlePlayerEnter(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 	UFUNCTION()
-	void OnPlayerExit(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
+	void HandlePlayerExit(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
+
+	// Override these in child classes
+	virtual void OnPlayerEnter(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+	virtual void OnPlayerExit(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
 };

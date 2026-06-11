@@ -10,6 +10,7 @@
 #include "Components/SphereComponent.h"
 #include "NPCInteractable.h"
 #include "QuestManagerComponent.h"
+#include "UIManagerComponent.h"
 #include "CustomPlayerCharacter.generated.h"
 
 UCLASS()
@@ -35,6 +36,7 @@ public:
 	void ClearCurrentNPC(ANPCInteractable* NPC);
 
 	UQuestManagerComponent* GetQuestManager() const { return QuestManager; }
+	UUIManagerComponent* GetUIManager() const { return UIManager; };
 
 protected:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
@@ -44,11 +46,14 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	UAttributeComponent* Attributes;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	UWeaponManagerComponent* WeaponManager;
 
-	UPROPERTY(VisibleAnywhere)
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	UQuestManagerComponent* QuestManager;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+	UUIManagerComponent* UIManager;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Combat")
 	UAnimMontage* AttackMontage;
