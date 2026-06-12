@@ -13,7 +13,7 @@ enum class EUIState : uint8
 	Dialogue,
 	Quest,
 	Inventory,
-	Paused
+	Paused,
 };
 
 UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))

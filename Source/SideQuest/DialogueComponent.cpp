@@ -12,14 +12,18 @@ void UDialogueComponent::BeginPlay()
 
 void UDialogueComponent::Interact(const FDialogueData& Dialogue)
 {
-	// If not in dialogue → start
+
 	if (!bIsInDialogue)
 	{
 		StartDialogue(Dialogue);
+
+
+
+		// FIRST LINE ALWAYS SAFE NOW
+		OnDialogueLine.Broadcast(CurrentDialogue.Lines[0].Text);
 		return;
 	}
 
-	// If already in dialogue → progress
 	NextLine();
 }
 
@@ -32,7 +36,7 @@ void UDialogueComponent::StartDialogue(const FDialogueData& Dialogue)
 	CurrentIndex = 0;
 	bIsInDialogue = true;
 
-	OnDialogueLine.Broadcast(CurrentDialogue.Lines[0].Text);
+	//OnDialogueLine.Broadcast(CurrentDialogue.Lines[0].Text);
 }
 
 void UDialogueComponent::NextLine()
@@ -56,6 +60,7 @@ void UDialogueComponent::EndDialogue()
 {
 	bIsInDialogue = false;
 	CurrentIndex = 0;
+	CurrentDialogue.Lines.Empty(); // optional but safer
 
 	OnDialogueFinished.Broadcast();
 }

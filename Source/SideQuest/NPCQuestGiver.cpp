@@ -3,6 +3,7 @@
 #include "CustomPlayerCharacter.h"
 #include "UIManagerComponent.h"
 #include "DialogueComponent.h"
+#include "DialogueWidget.h"
 
 void ANPCQuestGiver::BeginPlay()
 {
@@ -26,6 +27,7 @@ void ANPCQuestGiver::Interact(AActor* Interactor)
 	if (!DialogueComponent) return;
 
 	DialogueComponent->Interact(DialogueData);
+	UIManager->ShowWidget("Dialogue");
 
 	const FName QuestID = QuestData.QuestID;
 
