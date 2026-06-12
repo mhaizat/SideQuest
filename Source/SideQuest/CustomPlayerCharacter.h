@@ -11,6 +11,7 @@
 #include "NPCInteractable.h"
 #include "QuestManagerComponent.h"
 #include "UIManagerComponent.h"
+#include "DialogueComponent.h"
 #include "CustomPlayerCharacter.generated.h"
 
 UCLASS()
@@ -36,7 +37,8 @@ public:
 	void ClearCurrentNPC(ANPCInteractable* NPC);
 
 	UQuestManagerComponent* GetQuestManager() const { return QuestManager; }
-	UUIManagerComponent* GetUIManager() const { return UIManager; };
+	UUIManagerComponent* GetUIManager() const { return UIManager; }
+	UDialogueComponent* GetDialogueComponent() const { return DialogueComponent; }
 
 protected:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
@@ -54,6 +56,9 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	UUIManagerComponent* UIManager;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+	UDialogueComponent* DialogueComponent;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Combat")
 	UAnimMontage* AttackMontage;
@@ -81,4 +86,10 @@ protected:
 	void OnInteractEndOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
 	UFUNCTION()
 	void Interact();
+
+	UFUNCTION()
+	void HandleDialogueLine(FText Line);
+
+	UFUNCTION()
+	void HandleDialogueFinished();
 };

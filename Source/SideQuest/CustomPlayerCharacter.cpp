@@ -6,6 +6,7 @@ ACustomPlayerCharacter::ACustomPlayerCharacter()
 	WeaponManager = CreateDefaultSubobject<UWeaponManagerComponent>(TEXT("WeaponManager"));
 	UIManager = CreateDefaultSubobject<UUIManagerComponent>(TEXT("UIManager"));
 	QuestManager = CreateDefaultSubobject<UQuestManagerComponent>(TEXT("QuestManager"));
+	DialogueComponent = CreateDefaultSubobject<UDialogueComponent>(TEXT("DialogueComponent"));
 
 	InteractionSphere = CreateDefaultSubobject<USphereComponent>(TEXT("InteractionSphere"));
 	if (!InteractionSphere) return;
@@ -38,6 +39,12 @@ void ACustomPlayerCharacter::BeginPlay()
 
 	InteractionSphere->OnComponentBeginOverlap.AddDynamic(this, &ACustomPlayerCharacter::OnInteractBeginOverlap);
 	InteractionSphere->OnComponentEndOverlap.AddDynamic(this, &ACustomPlayerCharacter::OnInteractEndOverlap);
+
+	if (DialogueComponent)
+	{
+		DialogueComponent->OnDialogueLine.AddDynamic(this, &ACustomPlayerCharacter::HandleDialogueLine);
+		DialogueComponent->OnDialogueFinished.AddDynamic(this, &ACustomPlayerCharacter::HandleDialogueFinished);
+	}
 }
 
 void ACustomPlayerCharacter::Attack()
@@ -155,4 +162,14 @@ void ACustomPlayerCharacter::SetCurrentNPC(ANPCInteractable* NPC)
 void ACustomPlayerCharacter::ClearCurrentNPC(ANPCInteractable* NPC)
 {
 	CurrentNPC = nullptr;
+}
+
+void ACustomPlayerCharacter::HandleDialogueLine(FText Line)
+{
+	UE_LOG(LogTemp, Warning, TEXT("DIALOGUE: %s"), *Line.ToString());
+}
+
+void ACustomPlayerCharacter::HandleDialogueFinished()
+{
+	UE_LOG(LogTemp, Warning, TEXT("DIALOGUE FINISHED"));
 }

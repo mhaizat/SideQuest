@@ -2,6 +2,7 @@
 #include "QuestManagerComponent.h"
 #include "CustomPlayerCharacter.h"
 #include "UIManagerComponent.h"
+#include "DialogueComponent.h"
 
 void ANPCQuestGiver::BeginPlay()
 {
@@ -21,9 +22,14 @@ void ANPCQuestGiver::Interact(AActor* Interactor)
 	UUIManagerComponent* UIManager = Player->GetUIManager();
 	if (!UIManager) return;
 
+	UDialogueComponent* DialogueComponent = Player->GetDialogueComponent();
+	if (!DialogueComponent) return;
+
+	DialogueComponent->Interact(DialogueData);
+
 	const FName QuestID = QuestData.QuestID;
 
-	if (QuestManager->IsQuestCompleted(QuestID))
+	/*if (QuestManager->IsQuestCompleted(QuestID))
 	{
 		QuestManager->CompleteQuest(QuestID);
 		bQuestGiven = false;
@@ -52,7 +58,7 @@ void ANPCQuestGiver::Interact(AActor* Interactor)
 
 		UE_LOG(LogTemp, Warning, TEXT("Quest Started: %s"), *QuestID.ToString());
 		return;
-	}
+	}*/
 }
 
 void ANPCQuestGiver::OnPlayerEnter(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)

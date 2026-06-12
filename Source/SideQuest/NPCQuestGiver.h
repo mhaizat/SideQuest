@@ -3,6 +3,7 @@
 #include "CoreMinimal.h"
 #include "NPCInteractable.h"
 #include "QuestData.h"
+#include "DialogueData.h"
 #include "NPCQuestGiver.generated.h"
 
 UCLASS()
