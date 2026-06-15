@@ -1,4 +1,5 @@
 #include "CustomPlayerCharacter.h"
+#include "Components/CapsuleComponent.h"
 
 ACustomPlayerCharacter::ACustomPlayerCharacter()
 {
@@ -8,18 +9,20 @@ ACustomPlayerCharacter::ACustomPlayerCharacter()
 	QuestManager = CreateDefaultSubobject<UQuestManagerComponent>(TEXT("QuestManager"));
 	DialogueComponent = CreateDefaultSubobject<UDialogueComponent>(TEXT("DialogueComponent"));
 
-	InteractionSphere = CreateDefaultSubobject<USphereComponent>(TEXT("InteractionSphere"));
-	if (!InteractionSphere) return;
+	//InteractionSphere = CreateDefaultSubobject<USphereComponent>(TEXT("InteractionSphere"));
+	//if (!InteractionSphere) return;
 
-	InteractionSphere->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
-	InteractionSphere->SetGenerateOverlapEvents(true);
+	//InteractionSphere->SetupAttachment(GetRootComponent());
 
-	InteractionSphere->SetCollisionObjectType(ECC_Pawn);
+	//InteractionSphere->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
+	//InteractionSphere->SetGenerateOverlapEvents(true);
 
-	InteractionSphere->SetCollisionResponseToAllChannels(ECR_Ignore);
-	InteractionSphere->SetCollisionResponseToChannel(ECC_Pawn, ECR_Overlap);
-	InteractionSphere->SetCollisionResponseToChannel(ECC_WorldDynamic, ECR_Overlap);
-	InteractionSphere->SetCollisionResponseToChannel(ECC_WorldStatic, ECR_Overlap);
+	//InteractionSphere->SetCollisionObjectType(ECC_Pawn);
+
+	//InteractionSphere->SetCollisionResponseToAllChannels(ECR_Ignore);
+	//InteractionSphere->SetCollisionResponseToChannel(ECC_Pawn, ECR_Overlap);
+	//InteractionSphere->SetCollisionResponseToChannel(ECC_WorldDynamic, ECR_Overlap);
+	//InteractionSphere->SetCollisionResponseToChannel(ECC_WorldStatic, ECR_Overlap);
 }
 
 void ACustomPlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -37,13 +40,16 @@ void ACustomPlayerCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
-	InteractionSphere->OnComponentBeginOverlap.AddDynamic(this, &ACustomPlayerCharacter::OnInteractBeginOverlap);
-	InteractionSphere->OnComponentEndOverlap.AddDynamic(this, &ACustomPlayerCharacter::OnInteractEndOverlap);
+	GetCapsuleComponent()->OnComponentBeginOverlap.AddDynamic(this, &ACustomPlayerCharacter::OnInteractBeginOverlap);
+	GetCapsuleComponent()->OnComponentEndOverlap.AddDynamic(this, &ACustomPlayerCharacter::OnInteractEndOverlap);
 
 	if (DialogueComponent)
 	{
 		DialogueComponent->OnDialogueLine.AddDynamic(this, &ACustomPlayerCharacter::HandleDialogueLine);
 		DialogueComponent->OnDialogueFinished.AddDynamic(this, &ACustomPlayerCharacter::HandleDialogueFinished);
+
+		UE_LOG(LogTemp, Warning, TEXT("DialogueComponent is not null"));
+
 	}
 }
 
@@ -130,7 +136,6 @@ void ACustomPlayerCharacter::OnInteractBeginOverlap(UPrimitiveComponent* Overlap
 	if (NPC)
 	{
 		CurrentNPC = NPC;
-		UE_LOG(LogTemp, Warning, TEXT("NPC in range"));
 	}
 }
 
@@ -141,7 +146,6 @@ void ACustomPlayerCharacter::OnInteractEndOverlap(UPrimitiveComponent* Overlappe
 	if (NPC && NPC == CurrentNPC)
 	{
 		CurrentNPC = nullptr;
-		UE_LOG(LogTemp, Warning, TEXT("NPC out of range"));
 	}
 }
 
@@ -156,12 +160,13 @@ void ACustomPlayerCharacter::Interact()
 void ACustomPlayerCharacter::SetCurrentNPC(ANPCInteractable* NPC)
 {
 	CurrentNPC = NPC;
-
+	UE_LOG(LogTemp, Warning, TEXT("Player: NPC in range"));
 }
 
 void ACustomPlayerCharacter::ClearCurrentNPC(ANPCInteractable* NPC)
 {
 	CurrentNPC = nullptr;
+	UE_LOG(LogTemp, Warning, TEXT("Player: NPC out of range"));
 }
 
 void ACustomPlayerCharacter::HandleDialogueLine(FText Line)

@@ -7,56 +7,33 @@
 void UDialogueWidget::NativeConstruct()
 {
 	Super::NativeConstruct();
+}
 
-	APlayerController* PC = GetWorld()->GetFirstPlayerController();
-	if (!PC) return;
+void UDialogueWidget::InitializeWidget(UDialogueComponent* InDialogueComponent)
+{
+	if (!InDialogueComponent || bIsBound) return;
 
-	ACustomPlayerCharacter* Player = Cast<ACustomPlayerCharacter>(PC->GetPawn());
-	if (!Player) return;
 
-	CachedDialogue = Player->GetDialogueComponent();
-	if (!CachedDialogue) return;
+	CachedDialogue = InDialogueComponent;
 
-	// IMPORTANT: prevent duplicate binding
 	CachedDialogue->OnDialogueLine.RemoveAll(this);
 	CachedDialogue->OnDialogueFinished.RemoveAll(this);
 
 	CachedDialogue->OnDialogueLine.AddDynamic(this, &UDialogueWidget::HandleDialogueLine);
 	CachedDialogue->OnDialogueFinished.AddDynamic(this, &UDialogueWidget::HandleDialogueFinished);
 
+	bIsBound = true;
+
 	UE_LOG(LogTemp, Warning, TEXT("DialogueWidget bound once"));
-}
-
-void UDialogueWidget::InitializeWidget(UDialogueComponent* InDialogueComponent)
-{
-	CachedDialogue = InDialogueComponent;
-
-	if (!CachedDialogue) return;
-
-	CachedDialogue->OnDialogueLine.AddDynamic(this, &UDialogueWidget::HandleDialogueLine);
-	CachedDialogue->OnDialogueFinished.AddDynamic(this, &UDialogueWidget::HandleDialogueFinished);
-
-	UE_LOG(LogTemp, Warning, TEXT("Bound to DialogueComponent"));
 }
 
 void UDialogueWidget::HandleDialogueLine(FText Line)
 {
-	UE_LOG(LogTemp, Warning, TEXT("Widget received line"));
-
-	if (DialogueText)
-	{
-		DialogueText->SetText(Line);
-	}
-	else
-	{
-		UE_LOG(LogTemp, Warning, TEXT("DialogueText is NULL"));
-	}
+	DialogueText->SetText(Line);
 }
 
 void UDialogueWidget::HandleDialogueFinished()
 {
-	RemoveFromParent();
-
 	APlayerController* PC = GetWorld()->GetFirstPlayerController();
 	if (!PC) return;
 
@@ -69,5 +46,49 @@ void UDialogueWidget::HandleDialogueFinished()
 	UUIManagerComponent* UIManager = Player->GetUIManager();
 	if (!UIManager) return;
 
+	//SetVisibility(ESlateVisibility::Collapsed);
 	UIManager->HideWidget("Dialogue");
+
+	UE_LOG(LogTemp, Warning, TEXT("Dialogue finished - hiding widget"));
 }
+
+//void UDialogueWidget::HandleDialogueChoices(const TArray<FDialogueChoice>& Choices)
+//{
+	//if (!ChoiceBox) return;
+
+	//ChoiceBox->ClearChildren();
+
+	//for (int32 i = 0; i < Choices.Num(); i++)
+	//{
+	//	const FDialogueChoice& Choice = Choices[i];
+
+	//	UButton* Button = WidgetTree->ConstructWidget<UButton>(UButton::StaticClass());
+
+	//	UTextBlock* Text = WidgetTree->ConstructWidget<UTextBlock>(UTextBlock::StaticClass());
+	//	Text->SetText(Choice.Text);
+
+	//	Button->AddChild(Text);
+
+	//	// capture index safely via user index
+	//	const int32 Index = i;
+
+	//	Button->OnClicked.AddDynamic(this, &UDialogueWidget::OnChoiceClicked);
+	//	Button->SetUserFocus(this);
+
+	//	Button->SetTag(FName(*FString::FromInt(Index)));
+
+	//	ChoiceBox->AddChild(Button);
+	//}
+//}
+
+//void UDialogueWidget::OnChoiceClicked()
+//{
+	//UButton* Button = Cast<UButton>(GetFocusedWidget());
+	//if (!Button || !CachedDialogue) return;
+
+	//int32 Index = FCString::Atoi(*Button->GetTag().ToString());
+
+	//CachedDialogue->SelectChoice(Index);
+
+	//ChoiceBox->ClearChildren();
+//}

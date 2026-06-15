@@ -50,7 +50,7 @@ protected:
 	TMap<FName, TSubclassOf<UUserWidget>> WidgetClasses;
 
 	// Runtime widget storage
-	UPROPERTY()
+	UPROPERTY(VisibleAnywhere)
 	TMap<FName, UUserWidget*> WidgetInstances;
 
 	// State → Widget mapping

@@ -2,6 +2,9 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
+#include "Components/VerticalBox.h"
+#include "Components/Button.h"
+#include "Components/TextBlock.h"
 #include "DialogueWidget.generated.h"
 
 UCLASS()
@@ -15,6 +18,12 @@ public:
 protected:
 	virtual void NativeConstruct() override;
 
+	//UFUNCTION()
+	//void OnChoiceClicked();
+
+	UPROPERTY(meta = (BindWidget))
+	UVerticalBox* ChoiceBox;
+
 	UPROPERTY(meta = (BindWidget))
 	UTextBlock* DialogueText;
 
@@ -26,4 +35,9 @@ protected:
 
 	UFUNCTION()
 	void HandleDialogueFinished();
+
+	bool bIsBound = false;
+
+	/*UFUNCTION()
+	void HandleDialogueChoices(const TArray<FDialogueChoice>& Choices);*/
 };

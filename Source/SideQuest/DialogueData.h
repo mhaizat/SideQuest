@@ -1,43 +1,58 @@
-#pragma once
+﻿#pragma once
 
 #include "CoreMinimal.h"
 #include "DialogueData.generated.h"
 
-USTRUCT(BlueprintType)
-struct FDialogueLine
+UENUM(BlueprintType)
+enum class EDialogueAction : uint8
 {
-	GENERATED_BODY()
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	FText Text;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	bool bEndDialogue = false;
+	None,
+	StartQuest,
+	OngoingQuest,
+	CompleteQuest
 };
 
-USTRUCT(BlueprintType)
-struct FDialogueData
-{
-	GENERATED_BODY()
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	FName DialogueID;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	TArray<FDialogueLine> Lines;
-};
+//USTRUCT(BlueprintType)
+//struct FDialogueChoice
+//{
+//    GENERATED_BODY()
+//
+//    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+//    FText Text;
+//
+//    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+//    FName NextNodeID;
+//};
 
 USTRUCT(BlueprintType)
 struct FDialogueNode
 {
 	GENERATED_BODY()
 
-	UPROPERTY(EditAnywhere)
+	/*UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FName NodeID;*/
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FText Text;
 
-	UPROPERTY(EditAnywhere)
-	TArray<FName> NextNodeIDs; // branching
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	EDialogueAction Action = EDialogueAction::None;
 
-	UPROPERTY(EditAnywhere)
+	//UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	//TArray<FDialogueChoice> Choices;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool bIsEnd = false;
+};
+
+USTRUCT(BlueprintType)
+struct FDialogueData
+{
+    GENERATED_BODY()
+
+    /*UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    FName StartNodeID;*/
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    TArray<FDialogueNode> Nodes;
 };

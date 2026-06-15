@@ -46,19 +46,19 @@ protected:
 	void Attack();
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
-	UAttributeComponent* Attributes;
+	class UAttributeComponent* Attributes;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
-	UWeaponManagerComponent* WeaponManager;
+	class UWeaponManagerComponent* WeaponManager;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
-	UQuestManagerComponent* QuestManager;
+	class UQuestManagerComponent* QuestManager;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
-	UUIManagerComponent* UIManager;
+	class UUIManagerComponent* UIManager;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
-	UDialogueComponent* DialogueComponent;
+	class UDialogueComponent* DialogueComponent;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Combat")
 	UAnimMontage* AttackMontage;
@@ -75,8 +75,8 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Combat")
 	TSubclassOf<AWeaponBase> WeaponClass;
 
-	UPROPERTY(VisibleAnywhere)
-	class USphereComponent* InteractionSphere;
+	//UPROPERTY(VisibleAnywhere)
+	//class USphereComponent* InteractionSphere;
 
 	class ANPCInteractable* CurrentNPC = nullptr;
 

@@ -49,6 +49,7 @@ void UUIManagerComponent::ShowWidget(FName WidgetID)
 {
 	if (UUserWidget* Widget = GetWidget(WidgetID))
 	{
+		//Widget->AddToViewport();
 		Widget->SetVisibility(ESlateVisibility::Visible);
 	}
 }
@@ -57,8 +58,16 @@ void UUIManagerComponent::HideWidget(FName WidgetID)
 {
 	if (UUserWidget* Widget = GetWidget(WidgetID))
 	{
-		Widget->SetVisibility(ESlateVisibility::Hidden);
+		//Widget->RemoveFromViewport();
+		Widget->SetVisibility(ESlateVisibility::Collapsed);
+
+		UE_LOG(LogTemp, Warning,
+			TEXT("Current Visibility: %d"),
+			(int32)Widget->GetVisibility());
+		//UE_LOG(LogTemp, Warning, TEXT("HideWidget"));
 	}
+
+	UE_LOG(LogTemp, Warning, TEXT("UIManager hiding Dialogue widget"));
 }
 
 // -------------------------

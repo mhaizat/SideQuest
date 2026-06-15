@@ -26,10 +26,19 @@ void ANPCQuestGiver::Interact(AActor* Interactor)
 	UDialogueComponent* DialogueComponent = Player->GetDialogueComponent();
 	if (!DialogueComponent) return;
 
-	DialogueComponent->Interact(DialogueData);
-	UIManager->ShowWidget("Dialogue");
+	// 🔴 CHANGE 1: Get widget FIRST (no UI yet)
+	UDialogueWidget* Widget = Cast<UDialogueWidget>(UIManager->GetWidget("Dialogue"));
+	if (!Widget) return;
 
-	const FName QuestID = QuestData.QuestID;
+	if (!DialogueComponent->IsInDialogue())
+	{
+		Widget->InitializeWidget(DialogueComponent);
+		UIManager->ShowWidget("Dialogue");
+	}
+
+	DialogueComponent->Interact(DialogueAsset);
+
+	//const FName QuestID = QuestData.QuestID;
 
 	/*if (QuestManager->IsQuestCompleted(QuestID))
 	{
@@ -66,13 +75,9 @@ void ANPCQuestGiver::Interact(AActor* Interactor)
 void ANPCQuestGiver::OnPlayerEnter(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 	Super::OnPlayerEnter(OverlappedComp, OtherActor, OtherComp, OtherBodyIndex, bFromSweep, SweepResult);
-
-	UE_LOG(LogTemp, Warning, TEXT("Quest NPC Enter"));
 }
 
 void ANPCQuestGiver::OnPlayerExit(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
 	Super::OnPlayerExit(OverlappedComp, OtherActor, OtherComp, OtherBodyIndex);
-
-	UE_LOG(LogTemp, Warning, TEXT("Quest NPC Exit"));
 }

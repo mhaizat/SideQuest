@@ -3,7 +3,7 @@
 #include "CoreMinimal.h"
 #include "NPCInteractable.h"
 #include "QuestData.h"
-#include "DialogueData.h"
+#include "DialogueDataAsset.h"
 #include "NPCQuestGiver.generated.h"
 
 UCLASS()
@@ -22,6 +22,9 @@ protected:
 
 	UPROPERTY(EditAnywhere, Category = "Quest")
 	FQuestData QuestData;
+
+	UPROPERTY(EditAnywhere, Category = "Dialogue")
+	UDialogueDataAsset* DialogueAsset;
 
 	virtual void OnPlayerEnter(
 		UPrimitiveComponent* OverlappedComp,
