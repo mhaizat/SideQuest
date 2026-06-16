@@ -12,6 +12,7 @@
 #include "QuestManagerComponent.h"
 #include "UIManagerComponent.h"
 #include "DialogueComponent.h"
+#include "GameStateManagerComponent.h"
 #include "CustomPlayerCharacter.generated.h"
 
 UCLASS()
@@ -39,6 +40,7 @@ public:
 	UQuestManagerComponent* GetQuestManager() const { return QuestManager; }
 	UUIManagerComponent* GetUIManager() const { return UIManager; }
 	UDialogueComponent* GetDialogueComponent() const { return DialogueComponent; }
+	UGameStateManagerComponent* GetGameStateManagerComponent() const { return GameStateManagerComponent; }
 
 protected:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
@@ -59,6 +61,9 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	class UDialogueComponent* DialogueComponent;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+	class UGameStateManagerComponent* GameStateManagerComponent;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Combat")
 	UAnimMontage* AttackMontage;

@@ -24,9 +24,6 @@ void UUIManagerComponent::BeginPlay()
 
 		WidgetInstances.Add(Pair.Key, Widget);
 	}
-
-	// Optional: start in Gameplay state
-	SetUIState(EUIState::Gameplay);
 }
 
 // -------------------------
@@ -68,36 +65,4 @@ void UUIManagerComponent::HideWidget(FName WidgetID)
 	}
 
 	UE_LOG(LogTemp, Warning, TEXT("UIManager hiding Dialogue widget"));
-}
-
-// -------------------------
-// STATE MACHINE CORE
-// -------------------------
-void UUIManagerComponent::SetUIState(EUIState NewState)
-{
-	if (CurrentState == NewState) return;
-
-	// Hide previous state widget
-	if (StateWidgets.Contains(CurrentState))
-	{
-		FName OldWidgetID = StateWidgets[CurrentState];
-
-		if (UUserWidget* OldWidget = GetWidget(OldWidgetID))
-		{
-			OldWidget->SetVisibility(ESlateVisibility::Hidden);
-		}
-	}
-
-	// Show new state widget
-	if (StateWidgets.Contains(NewState))
-	{
-		FName NewWidgetID = StateWidgets[NewState];
-
-		if (UUserWidget* NewWidget = GetWidget(NewWidgetID))
-		{
-			NewWidget->SetVisibility(ESlateVisibility::Visible);
-		}
-	}
-
-	CurrentState = NewState;
 }

@@ -1,4 +1,6 @@
 ﻿#include "DialogueComponent.h"
+#include "GameStateManagerComponent.h"
+#include "CustomPlayerCharacter.h"
 
 UDialogueComponent::UDialogueComponent()
 {
@@ -42,6 +44,14 @@ void UDialogueComponent::Interact(UDialogueDataAsset* Dialogue)
 void UDialogueComponent::StartDialogue(UDialogueDataAsset* Dialogue)
 {
 	UE_LOG(LogTemp, Warning, TEXT("StartDialogue"));
+	
+	ACustomPlayerCharacter* Player = Cast<ACustomPlayerCharacter>(GetOwner());
+	if (!Player) return;
+
+	UGameStateManagerComponent* GameStateManagerComponent = Player->GetGameStateManagerComponent();
+	if (!GameStateManagerComponent) return;
+
+	GameStateManagerComponent->SetState(EGameState::Dialogue);
 
 	CurrentDialogue = Dialogue;
 	CurrentIndex = 0;
@@ -52,6 +62,14 @@ void UDialogueComponent::StartDialogue(UDialogueDataAsset* Dialogue)
 
 void UDialogueComponent::EndDialogue()
 {
+	ACustomPlayerCharacter* Player = Cast<ACustomPlayerCharacter>(GetOwner());
+	if (!Player) return;
+
+	UGameStateManagerComponent* GameStateManagerComponent = Player->GetGameStateManagerComponent();
+	if (!GameStateManagerComponent) return;
+
+	GameStateManagerComponent->SetState(EGameState::Gameplay);
+
 	UE_LOG(LogTemp, Warning, TEXT("Dialogue Ended"));
 
 	SetIsInDialogue(false);

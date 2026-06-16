@@ -8,6 +8,7 @@ ACustomPlayerCharacter::ACustomPlayerCharacter()
 	UIManager = CreateDefaultSubobject<UUIManagerComponent>(TEXT("UIManager"));
 	QuestManager = CreateDefaultSubobject<UQuestManagerComponent>(TEXT("QuestManager"));
 	DialogueComponent = CreateDefaultSubobject<UDialogueComponent>(TEXT("DialogueComponent"));
+	GameStateManagerComponent = CreateDefaultSubobject<UGameStateManagerComponent>(TEXT("GameStateManagerComponent"));
 
 	//InteractionSphere = CreateDefaultSubobject<USphereComponent>(TEXT("InteractionSphere"));
 	//if (!InteractionSphere) return;

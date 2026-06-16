@@ -6,16 +6,6 @@
 #include "QuestTrackerWidget.h"
 #include "UIManagerComponent.generated.h"
 
-UENUM(BlueprintType)
-enum class EUIState : uint8
-{
-	Gameplay,
-	Dialogue,
-	Quest,
-	Inventory,
-	Paused,
-};
-
 UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
 class SIDEQUEST_API UUIManagerComponent : public UActorComponent
 {
@@ -38,11 +28,6 @@ public:
 	void ShowWidget(FName WidgetID);
 	void HideWidget(FName WidgetID);
 
-	// -------------------------
-	// State System (MAIN FEATURE)
-	// -------------------------
-	void SetUIState(EUIState NewState);
-
 protected:
 
 	// Widget class registry (setup in editor)
@@ -52,12 +37,4 @@ protected:
 	// Runtime widget storage
 	UPROPERTY(VisibleAnywhere)
 	TMap<FName, UUserWidget*> WidgetInstances;
-
-	// State → Widget mapping
-	UPROPERTY(EditDefaultsOnly, Category = "UI|State")
-	TMap<EUIState, FName> StateWidgets;
-
-	// Current UI state
-	UPROPERTY()
-	EUIState CurrentState = EUIState::Gameplay;
 };
