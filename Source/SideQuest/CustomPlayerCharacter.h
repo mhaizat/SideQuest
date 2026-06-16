@@ -80,9 +80,6 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Combat")
 	TSubclassOf<AWeaponBase> WeaponClass;
 
-	//UPROPERTY(VisibleAnywhere)
-	//class USphereComponent* InteractionSphere;
-
 	class ANPCInteractable* CurrentNPC = nullptr;
 
 	UFUNCTION()

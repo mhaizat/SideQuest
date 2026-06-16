@@ -15,7 +15,6 @@ public:
 	void Setup(const FText& InText, int32 InChoiceIndex, UDialogueComponent* InDialogue);
 
 protected:
-
 	UPROPERTY(meta = (BindWidget))
 	class UButton* ChoiceButton;
 

@@ -22,9 +22,6 @@ public:
 protected:
 	virtual void NativeConstruct() override;
 
-	//UFUNCTION()
-	//void OnChoiceClicked();
-
 	UPROPERTY(EditDefaultsOnly, Category = "UI")
 	TSubclassOf<UButtonChoiceWidget> ButtonChoiceClass;
 
@@ -47,7 +44,4 @@ protected:
 
 	UFUNCTION()
 	void HandleDialogueChoices(const TArray<FDialogueChoice>& Choices);
-
-	/*UFUNCTION()
-	void HandleDialogueChoices(const TArray<FDialogueChoice>& Choices);*/
 };

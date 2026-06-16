@@ -38,7 +38,6 @@ struct FDialogueNode
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool bIsEnd = false;
 
-	// NEW: default next node
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	int32 NextIndex = INDEX_NONE;
 
@@ -50,9 +49,6 @@ USTRUCT(BlueprintType)
 struct FDialogueData
 {
     GENERATED_BODY()
-
-    /*UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    FName StartNodeID;*/
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
     TArray<FDialogueNode> Nodes;

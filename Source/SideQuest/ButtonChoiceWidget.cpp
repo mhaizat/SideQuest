@@ -8,7 +8,6 @@ void UButtonChoiceWidget::Setup(const FText& InText, int32 InChoiceIndex, UDialo
 	ChoiceIndex = InChoiceIndex;
 	DialogueRef = InDialogue;
 
-	// IMPORTANT: bind once (not every setup call)
 	ChoiceButton->OnClicked.RemoveAll(this);
 	ChoiceButton->OnClicked.AddDynamic(this, &UButtonChoiceWidget::OnClicked);
 }

@@ -2,10 +2,6 @@
 #include "GameStateManagerComponent.h"
 #include "CustomPlayerCharacter.h"
 
-UDialogueComponent::UDialogueComponent()
-{
-}
-
 void UDialogueComponent::BeginPlay()
 {
 	Super::BeginPlay();
@@ -81,8 +77,6 @@ void UDialogueComponent::EndDialogue()
 
 	OnDialogueChoiceRequested.Broadcast(TArray<FDialogueChoice>());
 	OnDialogueLine.Broadcast(FText::FromString(TEXT("")));
-
-	//OnDialogueFinished.Broadcast();
 }
 
 void UDialogueComponent::ProcessCurrentLine()
@@ -96,21 +90,18 @@ void UDialogueComponent::ProcessCurrentLine()
 
 	const FDialogueNode& Node = CurrentDialogue->Nodes[CurrentIndex];
 
-	// Always show text
 	OnDialogueLine.Broadcast(Node.Text);
 
-	// 🔥 END NODE → CLEAR UI
 	if (Node.bIsEnd)
 	{
 		bDialogueFinished = true;
 
-		// IMPORTANT: clear choices UI
 		OnDialogueChoiceRequested.Broadcast(TArray<FDialogueChoice>());
 
 		return;
 	}
 
-	// CHOICE NODE
+	//! NOTE: CHOICE NODE
 	if (Node.Choices.Num() > 0)
 	{
 		bWaitingForChoice = true;
@@ -118,7 +109,7 @@ void UDialogueComponent::ProcessCurrentLine()
 		return;
 	}
 
-	// NORMAL FLOW
+	//! NOTE: NORMAL FLOW
 	if (Node.NextIndex != INDEX_NONE)
 	{
 		CurrentIndex = Node.NextIndex;
@@ -149,16 +140,3 @@ void UDialogueComponent::SelectChoice(int32 ChoiceIndex)
 
 	ProcessCurrentLine();
 }
-
-//const FDialogueNode* UDialogueComponent::GetNode(FName NodeID) const
-//{
-//	for (const FDialogueNode& Node : CurrentDialogue->Nodes)
-//    {
-//        if (Node.NodeID == NodeID)
-//        {
-//            return &Node;
-//        }
-//    }
-//
-//    return nullptr;
-//}

@@ -31,16 +31,12 @@ public:
 	UPROPERTY(BlueprintAssignable)
 	FOnDialogueChoiceRequested OnDialogueChoiceRequested;
 
-	//UPROPERTY(BlueprintAssignable)
-	//FOnDialogueChoices OnDialogueChoices;
-
 	void SetIsInDialogue(bool bNewValue);
 	bool IsInDialogue() { return bIsInDialogue; }
 
 protected:
 	virtual void BeginPlay() override;
 	virtual void PostInitProperties() override;
-
 	
 	UPROPERTY(VisibleAnywhere, Category = "Dialogue")
 	bool bDialogueFinished = false;
@@ -56,11 +52,7 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, Category = "Dialogue")
 	int32 CurrentIndex = 0;
-private:
-	//FName CurrentNodeID;
 
-	//const FDialogueNode* GetNode(FName NodeID) const;
-	//void ProcessCurrentNode();
+private:
 	void ProcessCurrentLine();
-	//void NextNode();
 };

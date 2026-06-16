@@ -9,21 +9,6 @@ ACustomPlayerCharacter::ACustomPlayerCharacter()
 	QuestManager = CreateDefaultSubobject<UQuestManagerComponent>(TEXT("QuestManager"));
 	DialogueComponent = CreateDefaultSubobject<UDialogueComponent>(TEXT("DialogueComponent"));
 	GameStateManagerComponent = CreateDefaultSubobject<UGameStateManagerComponent>(TEXT("GameStateManagerComponent"));
-
-	//InteractionSphere = CreateDefaultSubobject<USphereComponent>(TEXT("InteractionSphere"));
-	//if (!InteractionSphere) return;
-
-	//InteractionSphere->SetupAttachment(GetRootComponent());
-
-	//InteractionSphere->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
-	//InteractionSphere->SetGenerateOverlapEvents(true);
-
-	//InteractionSphere->SetCollisionObjectType(ECC_Pawn);
-
-	//InteractionSphere->SetCollisionResponseToAllChannels(ECR_Ignore);
-	//InteractionSphere->SetCollisionResponseToChannel(ECC_Pawn, ECR_Overlap);
-	//InteractionSphere->SetCollisionResponseToChannel(ECC_WorldDynamic, ECR_Overlap);
-	//InteractionSphere->SetCollisionResponseToChannel(ECC_WorldStatic, ECR_Overlap);
 }
 
 void ACustomPlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)

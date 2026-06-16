@@ -26,7 +26,6 @@ void ANPCQuestGiver::Interact(AActor* Interactor)
 	UDialogueComponent* DialogueComponent = Player->GetDialogueComponent();
 	if (!DialogueComponent) return;
 
-	// 🔴 CHANGE 1: Get widget FIRST (no UI yet)
 	UDialogueWidget* Widget = Cast<UDialogueWidget>(UIManager->GetWidget("Dialogue"));
 	if (!Widget) return;
 
