@@ -58,62 +58,79 @@ void UDialogueComponent::EndDialogue()
 	CurrentDialogue = nullptr;
 	CurrentIndex = 0;
 
+	bIsInDialogue = false;
+	bWaitingForChoice = false;
+
+	OnDialogueChoiceRequested.Broadcast(TArray<FDialogueChoice>());
+	OnDialogueLine.Broadcast(FText::FromString(TEXT("")));
+
 	//OnDialogueFinished.Broadcast();
 }
 
 void UDialogueComponent::ProcessCurrentLine()
 {
-	/*if (!CurrentDialogue)
+	if (!CurrentDialogue ||
+		!CurrentDialogue->Nodes.IsValidIndex(CurrentIndex))
 	{
 		EndDialogue();
-		return;
-	}*/
-	
-	if (!CurrentDialogue->Nodes.IsValidIndex(CurrentIndex))
-	{
-		EndDialogue();
-		UE_LOG(LogTemp, Warning, TEXT("ProcessCurrentLine 1"));
-
 		return;
 	}
-	
+
 	const FDialogueNode& Node = CurrentDialogue->Nodes[CurrentIndex];
 
+	// Always show text
 	OnDialogueLine.Broadcast(Node.Text);
 
+	// 🔥 END NODE → CLEAR UI
 	if (Node.bIsEnd)
 	{
 		bDialogueFinished = true;
 
-		UE_LOG(LogTemp, Warning, TEXT("ProcessCurrentLine 2"));
+		// IMPORTANT: clear choices UI
+		OnDialogueChoiceRequested.Broadcast(TArray<FDialogueChoice>());
 
 		return;
 	}
 
-	CurrentIndex++;
+	// CHOICE NODE
+	if (Node.Choices.Num() > 0)
+	{
+		bWaitingForChoice = true;
+		OnDialogueChoiceRequested.Broadcast(Node.Choices);
+		return;
+	}
+
+	// NORMAL FLOW
+	if (Node.NextIndex != INDEX_NONE)
+	{
+		CurrentIndex = Node.NextIndex;
+	}
+	else
+	{
+		CurrentIndex++;
+	}
 }
 
-//void UDialogueComponent::SelectChoice(int32 ChoiceIndex)
-//{
-//	const FDialogueNode* CurrentNode = GetNode(CurrentNodeID);
-//	if (!CurrentNode)
-//	{
-//		EndDialogue();
-//		return;
-//	}
-//
-//	if (!CurrentNode->Choices.IsValidIndex(ChoiceIndex))
-//	{
-//		UE_LOG(LogTemp, Warning, TEXT("Invalid dialogue choice index"));
-//		return;
-//	}
-//
-//	const FDialogueChoice& Choice = CurrentNode->Choices[ChoiceIndex];
-//
-//	CurrentNodeID = Choice.NextNodeID;
-//
-//	ProcessCurrentNode();
-//}
+void UDialogueComponent::SelectChoice(int32 ChoiceIndex)
+{
+	if (!bWaitingForChoice) return;
+
+	const FDialogueNode& Node = CurrentDialogue->Nodes[CurrentIndex];
+
+	if (!Node.Choices.IsValidIndex(ChoiceIndex)) return;
+
+	const int32 NextNodeIndex = Node.Choices[ChoiceIndex].NextIndex;
+
+	if (NextNodeIndex == INDEX_NONE) return;
+
+	CurrentIndex = NextNodeIndex;
+
+	bWaitingForChoice = false;
+
+	OnDialogueChoiceRequested.Broadcast(TArray<FDialogueChoice>());
+
+	ProcessCurrentLine();
+}
 
 //const FDialogueNode* UDialogueComponent::GetNode(FName NodeID) const
 //{

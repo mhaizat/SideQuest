@@ -1,4 +1,4 @@
-#include "DialogueWidget.h"
+﻿#include "DialogueWidget.h"
 #include "Components/TextBlock.h"
 #include "UIManagerComponent.h"
 #include "CustomPlayerCharacter.h"
@@ -18,9 +18,11 @@ void UDialogueWidget::InitializeWidget(UDialogueComponent* InDialogueComponent)
 
 	CachedDialogue->OnDialogueLine.RemoveAll(this);
 	CachedDialogue->OnDialogueFinished.RemoveAll(this);
+	CachedDialogue->OnDialogueChoiceRequested.RemoveAll(this);
 
 	CachedDialogue->OnDialogueLine.AddDynamic(this, &UDialogueWidget::HandleDialogueLine);
 	CachedDialogue->OnDialogueFinished.AddDynamic(this, &UDialogueWidget::HandleDialogueFinished);
+	CachedDialogue->OnDialogueChoiceRequested.AddDynamic(this, &UDialogueWidget::HandleDialogueChoices);
 
 	bIsBound = true;
 
@@ -46,49 +48,36 @@ void UDialogueWidget::HandleDialogueFinished()
 	UUIManagerComponent* UIManager = Player->GetUIManager();
 	if (!UIManager) return;
 
-	//SetVisibility(ESlateVisibility::Collapsed);
 	UIManager->HideWidget("Dialogue");
 
 	UE_LOG(LogTemp, Warning, TEXT("Dialogue finished - hiding widget"));
 }
 
-//void UDialogueWidget::HandleDialogueChoices(const TArray<FDialogueChoice>& Choices)
-//{
-	//if (!ChoiceBox) return;
+void UDialogueWidget::HandleDialogueChoices(const TArray<FDialogueChoice>& Choices)
+{
+	ChoiceContainer->ClearChildren();
 
-	//ChoiceBox->ClearChildren();
+	if (Choices.Num() == 0)
+	{
+		ChoiceContainer->SetVisibility(ESlateVisibility::Collapsed);
+		UE_LOG(LogTemp, Warning, TEXT("HandleDialogueChoices: No choice"));
 
-	//for (int32 i = 0; i < Choices.Num(); i++)
-	//{
-	//	const FDialogueChoice& Choice = Choices[i];
+		return;
+	}
 
-	//	UButton* Button = WidgetTree->ConstructWidget<UButton>(UButton::StaticClass());
+	ChoiceContainer->SetVisibility(ESlateVisibility::Visible);
 
-	//	UTextBlock* Text = WidgetTree->ConstructWidget<UTextBlock>(UTextBlock::StaticClass());
-	//	Text->SetText(Choice.Text);
+	UE_LOG(LogTemp, Warning, TEXT("HandleDialogueChoices: Have choice"));
 
-	//	Button->AddChild(Text);
+	for (int32 i = 0; i < Choices.Num(); i++)
+	{
+		const FDialogueChoice& Choice = Choices[i];
 
-	//	// capture index safely via user index
-	//	const int32 Index = i;
+		UButtonChoiceWidget* Widget =
+			CreateWidget<UButtonChoiceWidget>(GetWorld(), ButtonChoiceClass);
 
-	//	Button->OnClicked.AddDynamic(this, &UDialogueWidget::OnChoiceClicked);
-	//	Button->SetUserFocus(this);
+		Widget->Setup(Choice.Text, i, CachedDialogue);
 
-	//	Button->SetTag(FName(*FString::FromInt(Index)));
-
-	//	ChoiceBox->AddChild(Button);
-	//}
-//}
-
-//void UDialogueWidget::OnChoiceClicked()
-//{
-	//UButton* Button = Cast<UButton>(GetFocusedWidget());
-	//if (!Button || !CachedDialogue) return;
-
-	//int32 Index = FCString::Atoi(*Button->GetTag().ToString());
-
-	//CachedDialogue->SelectChoice(Index);
-
-	//ChoiceBox->ClearChildren();
-//}
+		ChoiceContainer->AddChild(Widget);
+	}
+}

@@ -7,8 +7,8 @@
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnDialogueLine, FText, Line);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnDialogueFinished);
-//DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnDialogueChoices, const TArray<FDialogueChoice>&, Choices);
-
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnDialogueChoiceRequested, const TArray<FDialogueChoice>&, Choices);
+	
 UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
 class SIDEQUEST_API UDialogueComponent : public UActorComponent
 {
@@ -20,12 +20,16 @@ public:
 	void Interact(UDialogueDataAsset* Dialogue);
 	void StartDialogue(UDialogueDataAsset* Dialogue);
 	void EndDialogue();
+	void SelectChoice(int32 ChoiceIndex);
 
 	UPROPERTY(BlueprintAssignable)
 	FOnDialogueLine OnDialogueLine;
 
 	UPROPERTY(BlueprintAssignable)
 	FOnDialogueFinished OnDialogueFinished;
+
+	UPROPERTY(BlueprintAssignable)
+	FOnDialogueChoiceRequested OnDialogueChoiceRequested;
 
 	//UPROPERTY(BlueprintAssignable)
 	//FOnDialogueChoices OnDialogueChoices;
@@ -37,7 +41,7 @@ protected:
 	virtual void BeginPlay() override;
 	virtual void PostInitProperties() override;
 
-	//void SelectChoice(int32 ChoiceIndex);
+	
 	UPROPERTY(VisibleAnywhere, Category = "Dialogue")
 	bool bDialogueFinished = false;
 
@@ -45,24 +49,18 @@ protected:
 	bool bIsInDialogue = false;
 
 	UPROPERTY(VisibleAnywhere, Category = "Dialogue")
+	bool bWaitingForChoice = false;
+
+	UPROPERTY(VisibleAnywhere, Category = "Dialogue")
 	UDialogueDataAsset* CurrentDialogue;
 
 	UPROPERTY(VisibleAnywhere, Category = "Dialogue")
 	int32 CurrentIndex = 0;
-
-
-
 private:
-	
-
 	//FName CurrentNodeID;
 
 	//const FDialogueNode* GetNode(FName NodeID) const;
 	//void ProcessCurrentNode();
 	void ProcessCurrentLine();
-
-
-
-
 	//void NextNode();
 };

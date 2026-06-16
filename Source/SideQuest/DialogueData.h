@@ -12,25 +12,22 @@ enum class EDialogueAction : uint8
 	CompleteQuest
 };
 
-//USTRUCT(BlueprintType)
-//struct FDialogueChoice
-//{
-//    GENERATED_BODY()
-//
-//    UPROPERTY(EditAnywhere, BlueprintReadWrite)
-//    FText Text;
-//
-//    UPROPERTY(EditAnywhere, BlueprintReadWrite)
-//    FName NextNodeID;
-//};
+USTRUCT(BlueprintType)
+struct FDialogueChoice
+{
+    GENERATED_BODY()
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    FText Text;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	int32 NextIndex = INDEX_NONE;
+};
 
 USTRUCT(BlueprintType)
 struct FDialogueNode
 {
 	GENERATED_BODY()
-
-	/*UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	FName NodeID;*/
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FText Text;
@@ -38,11 +35,15 @@ struct FDialogueNode
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	EDialogueAction Action = EDialogueAction::None;
 
-	//UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	//TArray<FDialogueChoice> Choices;
-
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool bIsEnd = false;
+
+	// NEW: default next node
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	int32 NextIndex = INDEX_NONE;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TArray<FDialogueChoice> Choices;
 };
 
 USTRUCT(BlueprintType)
