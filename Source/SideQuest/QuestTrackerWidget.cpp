@@ -22,8 +22,6 @@ void UQuestTrackerWidget::NativeConstruct()
 	CachedQuestManager->OnQuestStarted.AddDynamic(this, &UQuestTrackerWidget::InitializeQuestDisplay);
 	CachedQuestManager->OnQuestUpdated.AddDynamic(this, &UQuestTrackerWidget::HandleQuestUpdated);
 	CachedQuestManager->OnQuestCompleted.AddDynamic(this, &UQuestTrackerWidget::HandleQuestCompleted);
-
-	UE_LOG(LogTemp, Warning, TEXT("QuestTracker NativeConstruct"));
 }
 
 void UQuestTrackerWidget::InitializeQuestDisplay(FQuestData QuestData)

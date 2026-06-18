@@ -19,11 +19,8 @@ public:
 	UQuestManagerComponent();
 
 	void AddQuest(const FQuestData& Quest);
-
 	void AddProgress(FName ItemID, int32 Amount = 1);
-
 	bool HasRelevantQuest(FName ItemID) const;
-
 	bool HasQuest(FName QuestID) const;
 	bool IsQuestCompleted(FName QuestID) const;
 	void StartQuest(const FQuestData& QuestData);

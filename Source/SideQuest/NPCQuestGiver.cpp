@@ -17,11 +17,8 @@ void ANPCQuestGiver::Interact(AActor* Interactor)
 	ACustomPlayerCharacter* Player = Cast<ACustomPlayerCharacter>(Interactor);
 	if (!Player) return;
 
-	UQuestManagerComponent* QuestManager = Player->GetQuestManager();
-	if (!QuestManager) return;
-
-	UUIManagerComponent* UIManager = Player->GetUIManager();
-	if (!UIManager) return;
+	UUIManagerComponent* UIManagerComponent = Player->GetUIManager();
+	if (!UIManagerComponent) return;
 
 	UDialogueComponent* DialogueComponent = Player->GetDialogueComponent();
 	if (!DialogueComponent) return;
@@ -29,23 +26,12 @@ void ANPCQuestGiver::Interact(AActor* Interactor)
 	const FQuestData& Quest = QuestData;
 
 	EQuestState State = GetQuestState(Player);
+
 	UDialogueDataAsset* const* FoundDialogue = DialogueMap.Find(State);
+	CurrentDialogueAsset = (FoundDialogue && *FoundDialogue) ? *FoundDialogue : nullptr;
 
-	if (FoundDialogue && *FoundDialogue)
-	{
-		CurrentDialogueAsset = *FoundDialogue;
-	}
-	else
-	{
-		CurrentDialogueAsset = nullptr;
-	}
-
-	UDialogueWidget* Widget = Cast<UDialogueWidget>(UIManager->GetWidget("Dialogue"));
-	if (!Widget)
-	{
-		UE_LOG(LogTemp, Warning, TEXT("Widget not valid"));
-		return;
-	}
+	UDialogueWidget* Widget = Cast<UDialogueWidget>(UIManagerComponent->GetWidget("Dialogue"));
+	if (!Widget) return;
 
 	if (!DialogueComponent->GetCurrentQuestGiver())
 	{
@@ -55,7 +41,7 @@ void ANPCQuestGiver::Interact(AActor* Interactor)
 	if (!DialogueComponent->IsInDialogue())
 	{
 		Widget->InitializeWidget(DialogueComponent);
-		UIManager->ShowWidget("Dialogue");
+		UIManagerComponent->ShowWidget("Dialogue");
 	}
 
 	DialogueComponent->Interact(CurrentDialogueAsset);
@@ -63,15 +49,15 @@ void ANPCQuestGiver::Interact(AActor* Interactor)
 
 EQuestState ANPCQuestGiver::GetQuestState(ACustomPlayerCharacter* Player)
 {
-	UQuestManagerComponent* QM = Player->GetQuestManager();
+	UQuestManagerComponent* QuestManagerComponent = Player->GetQuestManager();
 
-	if (QM->IsQuestCompleted(QuestData.QuestID))
+	if (QuestManagerComponent->IsQuestCompleted(QuestData.QuestID))
 	{
-		QM->OnQuestCompleted.Broadcast(QuestData);
+		QuestManagerComponent->OnQuestCompleted.Broadcast(QuestData);
 		return EQuestState::TurnedIn;
 	}
 
-	if (QM->HasQuest(QuestData.QuestID))
+	if (QuestManagerComponent->HasQuest(QuestData.QuestID))
 	{
 		return EQuestState::InProgress;
 	}

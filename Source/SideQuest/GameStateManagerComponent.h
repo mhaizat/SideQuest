@@ -22,15 +22,11 @@ public:
 	void SetState(EGameState NewState);
 
 	UFUNCTION(BlueprintPure)
-	EGameState GetCurrentState() const
-	{
-		return CurrentState;
-	}
+	EGameState GetCurrentState() const { return CurrentState; }
 
 private:
+	void ApplyState(EGameState NewState);
 
 	UPROPERTY()
 	EGameState CurrentState = EGameState::Gameplay;
-
-	void ApplyState(EGameState NewState);
 };

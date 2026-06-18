@@ -4,10 +4,7 @@
 
 void UGameStateManagerComponent::SetState(EGameState NewState)
 {
-	if (CurrentState == NewState)
-	{
-		return;
-	}
+	if (CurrentState == NewState) return;
 
 	CurrentState = NewState;
 
@@ -16,11 +13,8 @@ void UGameStateManagerComponent::SetState(EGameState NewState)
 
 void UGameStateManagerComponent::ApplyState(EGameState NewState)
 {
-	APlayerController* PC = GetWorld()->GetFirstPlayerController();
-	if (!PC)
-	{
-		return;
-	}
+	APlayerController* PlayerController = GetWorld()->GetFirstPlayerController();
+	if (!PlayerController) return;
 
 	ACustomPlayerCharacter* Player = Cast<ACustomPlayerCharacter>(GetOwner());
 	if (!Player) return;
@@ -33,45 +27,42 @@ void UGameStateManagerComponent::ApplyState(EGameState NewState)
 
 	switch (NewState)
 	{
-	case EGameState::Gameplay:
-	{
-		PC->SetShowMouseCursor(false);
+		case EGameState::Gameplay:
+		{
+			PlayerController->SetShowMouseCursor(false);
 
-		FInputModeGameOnly InputMode;
-		PC->SetInputMode(InputMode);
+			FInputModeGameOnly InputMode;
+			PlayerController->SetInputMode(InputMode);
+			PlayerController->SetIgnoreMoveInput(false);
+			PlayerController->SetIgnoreLookInput(false);
 
-		PC->SetIgnoreMoveInput(false);
-		PC->SetIgnoreLookInput(false);
+			UIManagerComponent->ShowWidget("HUD");
+			break;
+		}
 
-		UIManagerComponent->ShowWidget("HUD");
-		break;
-	}
+		case EGameState::UIOnly:
+		{
+			PlayerController->SetShowMouseCursor(true);
 
-	case EGameState::UIOnly:
-	{
-		PC->SetShowMouseCursor(true);
+			FInputModeGameAndUI InputMode;
+			InputMode.SetHideCursorDuringCapture(false);
 
-		FInputModeGameAndUI InputMode;
-		InputMode.SetHideCursorDuringCapture(false);
-		PC->SetInputMode(InputMode);
+			PlayerController->SetInputMode(InputMode);
+			PlayerController->SetIgnoreMoveInput(true);
+			PlayerController->SetIgnoreLookInput(true);
 
-		PC->SetIgnoreMoveInput(true);
-		PC->SetIgnoreLookInput(true);
+			UIManagerComponent->HideWidget("HUD");
+			break;
+		}
 
-		UIManagerComponent->HideWidget("HUD");
+		case EGameState::GameAndUI:
+		{
+			PlayerController->SetShowMouseCursor(true);
+			break;
+		}
 
-		break;
-	}
-
-	case EGameState::GameAndUI:
-	{
-		PC->SetShowMouseCursor(true);
-		break;
-	}
-
-
-	default:
-		break;
+		default:
+			break;
 	}
 }
 
