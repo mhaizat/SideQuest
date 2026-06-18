@@ -10,13 +10,7 @@ class ANPCQuestGiver;
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnDialogueLine, FText, Line);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnDialogueFinished);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnDialogueChoiceRequested, const TArray<FDialogueChoice>&, Choices);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(
-	FOnDialogueAction,
-	EDialogueAction,
-	Action,
-	FName,
-	QuestID
-);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnDialogueAction, EDialogueAction, Action, FName, QuestID);
 	
 UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
 class SIDEQUEST_API UDialogueComponent : public UActorComponent

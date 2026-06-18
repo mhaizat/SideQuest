@@ -28,15 +28,6 @@ void ACustomPlayerCharacter::BeginPlay()
 
 	GetCapsuleComponent()->OnComponentBeginOverlap.AddDynamic(this, &ACustomPlayerCharacter::OnInteractBeginOverlap);
 	GetCapsuleComponent()->OnComponentEndOverlap.AddDynamic(this, &ACustomPlayerCharacter::OnInteractEndOverlap);
-
-	if (DialogueComponent)
-	{
-		DialogueComponent->OnDialogueLine.AddDynamic(this, &ACustomPlayerCharacter::HandleDialogueLine);
-		DialogueComponent->OnDialogueFinished.AddDynamic(this, &ACustomPlayerCharacter::HandleDialogueFinished);
-
-		UE_LOG(LogTemp, Warning, TEXT("DialogueComponent is not null"));
-
-	}
 }
 
 void ACustomPlayerCharacter::Attack()
@@ -146,21 +137,9 @@ void ACustomPlayerCharacter::Interact()
 void ACustomPlayerCharacter::SetCurrentNPC(ANPCInteractable* NPC)
 {
 	CurrentNPC = NPC;
-	UE_LOG(LogTemp, Warning, TEXT("Player: NPC in range"));
 }
 
 void ACustomPlayerCharacter::ClearCurrentNPC(ANPCInteractable* NPC)
 {
 	CurrentNPC = nullptr;
-	UE_LOG(LogTemp, Warning, TEXT("Player: NPC out of range"));
-}
-
-void ACustomPlayerCharacter::HandleDialogueLine(FText Line)
-{
-	UE_LOG(LogTemp, Warning, TEXT("DIALOGUE: %s"), *Line.ToString());
-}
-
-void ACustomPlayerCharacter::HandleDialogueFinished()
-{
-	UE_LOG(LogTemp, Warning, TEXT("DIALOGUE FINISHED"));
 }

@@ -37,7 +37,7 @@ void ANPCQuestGiver::Interact(AActor* Interactor)
 	}
 	else
 	{
-		CurrentDialogueAsset = nullptr; // or fallback dialogue
+		CurrentDialogueAsset = nullptr;
 	}
 
 	UDialogueWidget* Widget = Cast<UDialogueWidget>(UIManager->GetWidget("Dialogue"));
@@ -55,72 +55,6 @@ void ANPCQuestGiver::Interact(AActor* Interactor)
 	}
 
 	DialogueComponent->Interact(CurrentDialogueAsset);
-
-
-	//if (bQuestGiven)
-	//{
-	//	UE_LOG(LogTemp, Warning, TEXT("Quest is in progress"));
-	//	return;
-	//}
-
-	//if (QuestManager->IsQuestCompleted(Quest.QuestID))
-	//{
-	//	QuestManager->CompleteQuest(Quest.QuestID);
-	//	UE_LOG(LogTemp, Warning, TEXT("Player has completed quest - should use turn-in dialogue"));
-	//	bQuestGiven = false;
-	//	return;
-	//	// OPTIONAL: switch to turn-in dialogue asset
-	//	// DialogueAsset = TurnInDialogueAsset;
-	//}
-
-	//UDialogueWidget* Widget = Cast<UDialogueWidget>(UIManager->GetWidget("Dialogue"));
-	//if (!Widget) return;
-
-	//if (!DialogueComponent->GetCurrentQuestGiver())
-	//{
-	//	DialogueComponent->SetQuestGiver(this);
-	//}
-
-	//if (!DialogueComponent->IsInDialogue())
-	//{
-	//	Widget->InitializeWidget(DialogueComponent);
-	//	UIManager->ShowWidget("Dialogue");
-	//}
-
-	//DialogueComponent->Interact(DialogueAsset);
-
-	//const FName QuestID = QuestData.QuestID;
-
-	/*if (QuestManager->IsQuestCompleted(QuestID))
-	{
-		QuestManager->CompleteQuest(QuestID);
-		bQuestGiven = false;
-
-		UE_LOG(LogTemp, Warning, TEXT("Quest Turned In: %s"), *QuestID.ToString());
-		return;
-	}
-
-	if (bQuestGiven)
-	{
-		UE_LOG(LogTemp, Warning, TEXT("Quest already given, in progress..."));
-		return;
-	}
-
-	if (!QuestManager->HasQuest(QuestID))
-	{
-		QuestManager->StartQuest(QuestData);
-		bQuestGiven = true;
-
-		UIManager->SetUIState(EUIState::Quest);
-
-		UQuestTrackerWidget* Widget = Cast<UQuestTrackerWidget>(UIManager->GetWidget("Quest"));
-		if (!Widget) return;
-
-		Widget->InitializeQuestDisplay(QuestData);
-
-		UE_LOG(LogTemp, Warning, TEXT("Quest Started: %s"), *QuestID.ToString());
-		return;
-	}*/
 }
 
 EQuestState ANPCQuestGiver::GetQuestState(ACustomPlayerCharacter* Player)

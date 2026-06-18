@@ -88,10 +88,4 @@ protected:
 	void OnInteractEndOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
 	UFUNCTION()
 	void Interact();
-
-	UFUNCTION()
-	void HandleDialogueLine(FText Line);
-
-	UFUNCTION()
-	void HandleDialogueFinished();
 };

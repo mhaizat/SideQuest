@@ -83,7 +83,6 @@ void UQuestManagerComponent::AddProgress(FName ItemID, int32 Amount)
 
 		OnQuestUpdated.Broadcast(Quest);
 
-		UE_LOG(LogTemp, Warning, TEXT("ItemID: '%s'"), *ItemID.ToString());
 		UE_LOG(LogTemp, Warning, TEXT("Quest Objective: '%s'"), *Quest.ObjectiveId.ToString());
 
 		return;
