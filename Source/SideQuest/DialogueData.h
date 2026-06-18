@@ -36,6 +36,9 @@ struct FDialogueNode
 	EDialogueAction Action = EDialogueAction::None;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FName QuestID;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool bIsEnd = false;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)

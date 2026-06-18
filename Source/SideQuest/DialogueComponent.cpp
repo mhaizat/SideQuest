@@ -1,6 +1,7 @@
 ﻿#include "DialogueComponent.h"
 #include "GameStateManagerComponent.h"
 #include "CustomPlayerCharacter.h"
+#include "NPCQuestGiver.h"
 
 void UDialogueComponent::BeginPlay()
 {
@@ -81,8 +82,7 @@ void UDialogueComponent::EndDialogue()
 
 void UDialogueComponent::ProcessCurrentLine()
 {
-	if (!CurrentDialogue ||
-		!CurrentDialogue->Nodes.IsValidIndex(CurrentIndex))
+	if (!CurrentDialogue || !CurrentDialogue->Nodes.IsValidIndex(CurrentIndex))
 	{
 		EndDialogue();
 		return;
@@ -91,6 +91,12 @@ void UDialogueComponent::ProcessCurrentLine()
 	const FDialogueNode& Node = CurrentDialogue->Nodes[CurrentIndex];
 
 	OnDialogueLine.Broadcast(Node.Text);
+
+	if (Node.Action != EDialogueAction::None)
+	{
+		ExecuteDialogueAction(Node.Action);
+
+	}
 
 	if (Node.bIsEnd)
 	{
@@ -139,4 +145,41 @@ void UDialogueComponent::SelectChoice(int32 ChoiceIndex)
 	OnDialogueChoiceRequested.Broadcast(TArray<FDialogueChoice>());
 
 	ProcessCurrentLine();
+}
+
+void UDialogueComponent::ExecuteDialogueAction(EDialogueAction Action)
+{
+	if (!CurrentQuestGiver) return;
+
+	ACustomPlayerCharacter* Player = Cast<ACustomPlayerCharacter>(GetOwner());
+	if (!Player) return;
+
+	UQuestManagerComponent* QuestManager = Player->GetQuestManager();
+	if (!QuestManager) return;
+
+	switch (Action)
+	{
+		case EDialogueAction::StartQuest:
+		{
+			QuestManager->StartQuest(GetCurrentQuestGiver()->GetQuestData());
+			GetCurrentQuestGiver()->SetQuestGiven(true);
+			break;
+		}
+
+		case EDialogueAction::CompleteQuest:
+		{
+			QuestManager->CompleteQuest(GetCurrentQuestGiver()->GetQuestData().QuestID);
+			UE_LOG(LogTemp, Warning, TEXT("Quest completed"));
+
+			break;
+		}
+
+		default:
+			break;
+	}
+}
+
+void UDialogueComponent::SetQuestGiver(ANPCQuestGiver* InQuestGiver)
+{
+	CurrentQuestGiver = InQuestGiver;
 }

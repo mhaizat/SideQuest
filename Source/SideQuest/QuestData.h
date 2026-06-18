@@ -3,6 +3,15 @@
 #include "CoreMinimal.h"
 #include "QuestData.generated.h"
 
+UENUM(BlueprintType)
+enum class EQuestState : uint8
+{
+	NotOffered,
+	Offered,
+	InProgress,
+	TurnedIn
+};
+
 USTRUCT(BlueprintType)
 struct FQuestData
 {

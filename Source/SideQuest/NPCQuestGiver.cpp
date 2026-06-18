@@ -26,8 +26,27 @@ void ANPCQuestGiver::Interact(AActor* Interactor)
 	UDialogueComponent* DialogueComponent = Player->GetDialogueComponent();
 	if (!DialogueComponent) return;
 
+	const FQuestData& Quest = QuestData;
+
+	EQuestState State = GetQuestState(Player);
+	UDialogueDataAsset* const* FoundDialogue = DialogueMap.Find(State);
+
+	if (FoundDialogue && *FoundDialogue)
+	{
+		CurrentDialogueAsset = *FoundDialogue;
+	}
+	else
+	{
+		CurrentDialogueAsset = nullptr; // or fallback dialogue
+	}
+
 	UDialogueWidget* Widget = Cast<UDialogueWidget>(UIManager->GetWidget("Dialogue"));
 	if (!Widget) return;
+
+	if (!DialogueComponent->GetCurrentQuestGiver())
+	{
+		DialogueComponent->SetQuestGiver(this);
+	}
 
 	if (!DialogueComponent->IsInDialogue())
 	{
@@ -35,7 +54,40 @@ void ANPCQuestGiver::Interact(AActor* Interactor)
 		UIManager->ShowWidget("Dialogue");
 	}
 
-	DialogueComponent->Interact(DialogueAsset);
+	DialogueComponent->Interact(CurrentDialogueAsset);
+
+
+	//if (bQuestGiven)
+	//{
+	//	UE_LOG(LogTemp, Warning, TEXT("Quest is in progress"));
+	//	return;
+	//}
+
+	//if (QuestManager->IsQuestCompleted(Quest.QuestID))
+	//{
+	//	QuestManager->CompleteQuest(Quest.QuestID);
+	//	UE_LOG(LogTemp, Warning, TEXT("Player has completed quest - should use turn-in dialogue"));
+	//	bQuestGiven = false;
+	//	return;
+	//	// OPTIONAL: switch to turn-in dialogue asset
+	//	// DialogueAsset = TurnInDialogueAsset;
+	//}
+
+	//UDialogueWidget* Widget = Cast<UDialogueWidget>(UIManager->GetWidget("Dialogue"));
+	//if (!Widget) return;
+
+	//if (!DialogueComponent->GetCurrentQuestGiver())
+	//{
+	//	DialogueComponent->SetQuestGiver(this);
+	//}
+
+	//if (!DialogueComponent->IsInDialogue())
+	//{
+	//	Widget->InitializeWidget(DialogueComponent);
+	//	UIManager->ShowWidget("Dialogue");
+	//}
+
+	//DialogueComponent->Interact(DialogueAsset);
 
 	//const FName QuestID = QuestData.QuestID;
 
@@ -69,6 +121,23 @@ void ANPCQuestGiver::Interact(AActor* Interactor)
 		UE_LOG(LogTemp, Warning, TEXT("Quest Started: %s"), *QuestID.ToString());
 		return;
 	}*/
+}
+
+EQuestState ANPCQuestGiver::GetQuestState(ACustomPlayerCharacter* Player)
+{
+	UQuestManagerComponent* QM = Player->GetQuestManager();
+
+	if (QM->IsQuestCompleted(QuestData.QuestID))
+	{
+		return EQuestState::TurnedIn;
+	}
+
+	if (QM->HasQuest(QuestData.QuestID))
+	{
+		return EQuestState::InProgress;
+	}
+
+	return EQuestState::NotOffered;
 }
 
 void ANPCQuestGiver::OnPlayerEnter(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
