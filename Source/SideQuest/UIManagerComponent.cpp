@@ -22,7 +22,17 @@ void UUIManagerComponent::BeginPlay()
 		Widget->AddToViewport();
 		Widget->SetVisibility(ESlateVisibility::Hidden);
 
+		UE_LOG(LogTemp, Warning, TEXT("INSERTING KEY: '%s'"), *Pair.Key.ToString());
+		UE_LOG(LogTemp, Warning, TEXT("REQUESTING KEY: '%s'"), TEXT("Quest"));
+
 		WidgetInstances.Add(Pair.Key, Widget);
+
+		if (UHUDWidget* HUDWidget = Cast<UHUDWidget>(Widget))
+		{
+			HUDWidget->InitializeHUDWidget(this);
+			UE_LOG(LogTemp, Warning, TEXT("HUD Casted"));
+
+		}
 	}
 }
 
@@ -44,11 +54,15 @@ UUserWidget* UUIManagerComponent::GetWidget(FName WidgetID) const
 // -------------------------
 void UUIManagerComponent::ShowWidget(FName WidgetID)
 {
-	if (UUserWidget* Widget = GetWidget(WidgetID))
-	{
-		//Widget->AddToViewport();
-		Widget->SetVisibility(ESlateVisibility::Visible);
-	}
+	UE_LOG(LogTemp, Warning, TEXT("ShowWidget 1"));
+
+	UUserWidget* Widget = GetWidget(WidgetID);
+	if (!Widget) return;
+	
+	UE_LOG(LogTemp, Warning, TEXT("ShowWidget 2"));
+
+	CurrentWidget = Widget;
+	CurrentWidget->SetVisibility(ESlateVisibility::Visible);
 }
 
 void UUIManagerComponent::HideWidget(FName WidgetID)
@@ -58,9 +72,7 @@ void UUIManagerComponent::HideWidget(FName WidgetID)
 		//Widget->RemoveFromViewport();
 		Widget->SetVisibility(ESlateVisibility::Collapsed);
 
-		UE_LOG(LogTemp, Warning,
-			TEXT("Current Visibility: %d"),
-			(int32)Widget->GetVisibility());
+		UE_LOG(LogTemp, Warning, TEXT("Current Visibility: %d"), (int32)Widget->GetVisibility());
 		//UE_LOG(LogTemp, Warning, TEXT("HideWidget"));
 	}
 

@@ -48,7 +48,7 @@ void UDialogueComponent::StartDialogue(UDialogueDataAsset* Dialogue)
 	UGameStateManagerComponent* GameStateManagerComponent = Player->GetGameStateManagerComponent();
 	if (!GameStateManagerComponent) return;
 
-	GameStateManagerComponent->SetState(EGameState::Dialogue);
+	GameStateManagerComponent->SetState(EGameState::UIOnly);
 
 	CurrentDialogue = Dialogue;
 	CurrentIndex = 0;

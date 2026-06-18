@@ -8,13 +8,8 @@ UENUM(BlueprintType)
 enum class EGameState : uint8
 {
 	Gameplay,
-	Dialogue,
-	Inventory,
-	Map,
-	Pause,
-	Cutscene,
-	Shopping,
-	Crafting
+	UIOnly,
+	GameAndUI
 };
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )

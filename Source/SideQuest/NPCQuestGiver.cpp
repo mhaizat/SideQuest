@@ -41,7 +41,11 @@ void ANPCQuestGiver::Interact(AActor* Interactor)
 	}
 
 	UDialogueWidget* Widget = Cast<UDialogueWidget>(UIManager->GetWidget("Dialogue"));
-	if (!Widget) return;
+	if (!Widget)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Widget not valid"));
+		return;
+	}
 
 	if (!DialogueComponent->GetCurrentQuestGiver())
 	{
