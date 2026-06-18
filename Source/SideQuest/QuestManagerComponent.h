@@ -6,7 +6,9 @@
 #include "DialogueData.h"
 #include "QuestManagerComponent.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnQuestStarted, FQuestData, Quest);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnQuestUpdated, FQuestData, Quest);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnQuestCompleted, FQuestData, Quest);
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class SIDEQUEST_API UQuestManagerComponent : public UActorComponent
@@ -28,7 +30,13 @@ public:
 	void CompleteQuest(FName QuestID);
 
 	UPROPERTY(BlueprintAssignable)
+	FOnQuestStarted OnQuestStarted;
+
+	UPROPERTY(BlueprintAssignable)
 	FOnQuestUpdated OnQuestUpdated;
+
+	UPROPERTY(BlueprintAssignable)
+	FOnQuestCompleted OnQuestCompleted;
 
 protected:
 	virtual void BeginPlay() override;

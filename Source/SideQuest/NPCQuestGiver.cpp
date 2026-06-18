@@ -67,6 +67,7 @@ EQuestState ANPCQuestGiver::GetQuestState(ACustomPlayerCharacter* Player)
 
 	if (QM->IsQuestCompleted(QuestData.QuestID))
 	{
+		QM->OnQuestCompleted.Broadcast(QuestData);
 		return EQuestState::TurnedIn;
 	}
 

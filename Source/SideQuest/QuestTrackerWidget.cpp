@@ -19,14 +19,17 @@ void UQuestTrackerWidget::NativeConstruct()
 	CachedQuestManager = Player->GetQuestManager();
 	if (!CachedQuestManager) return;
 
+	CachedQuestManager->OnQuestStarted.AddDynamic(this, &UQuestTrackerWidget::InitializeQuestDisplay);
 	CachedQuestManager->OnQuestUpdated.AddDynamic(this, &UQuestTrackerWidget::HandleQuestUpdated);
+	CachedQuestManager->OnQuestCompleted.AddDynamic(this, &UQuestTrackerWidget::HandleQuestCompleted);
 
 	UE_LOG(LogTemp, Warning, TEXT("QuestTracker NativeConstruct"));
-	
 }
 
 void UQuestTrackerWidget::InitializeQuestDisplay(FQuestData QuestData)
 {
+	SetVisibility(ESlateVisibility::Visible);
+
 	if (QuestNameText)
 	{
 		QuestNameText->SetText(QuestData.QuestName);
@@ -37,6 +40,11 @@ void UQuestTrackerWidget::InitializeQuestDisplay(FQuestData QuestData)
 		FString Text = FString::Printf(TEXT("%d / %d"), QuestData.CurrentAmount, QuestData.RequiredAmount);
 		ProgressText->SetText(FText::FromString(Text));
 	}
+}
+
+void UQuestTrackerWidget::HandleQuestCompleted(FQuestData Quest)
+{
+	SetVisibility(ESlateVisibility::Collapsed);
 }
 
 void UQuestTrackerWidget::HandleQuestUpdated(FQuestData Quest)
@@ -57,7 +65,9 @@ void UQuestTrackerWidget::NativeDestruct()
 {
 	if (CachedQuestManager)
 	{
+		CachedQuestManager->OnQuestStarted.RemoveAll(this);
 		CachedQuestManager->OnQuestUpdated.RemoveAll(this);
+		CachedQuestManager->OnQuestCompleted.RemoveAll(this);
 	}
 
 	Super::NativeDestruct();

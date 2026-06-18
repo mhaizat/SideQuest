@@ -19,7 +19,10 @@ public:
 
 	UFUNCTION()
 	void HandleQuestUpdated(FQuestData Quest);
+	UFUNCTION()
 	void InitializeQuestDisplay(FQuestData Quest);
+	UFUNCTION()
+	void HandleQuestCompleted(FQuestData Quest);
 
 protected:
 	UPROPERTY(meta = (BindWidget))

@@ -21,7 +21,7 @@ void UHUDWidget::InitializeHUDWidget(UUIManagerComponent* InUIManagerComponent)
 	QuestTrackerWidget = Cast<UQuestTrackerWidget>(Widget);
 	if (!QuestTrackerWidget) return;
 
-	QuestTrackerWidget->SetVisibility(ESlateVisibility::Visible);
+	//QuestTrackerWidget->SetVisibility(ESlateVisibility::Visible);
 
 	UE_LOG(LogTemp, Warning, TEXT("InitializeHUDWidget 4"));
 

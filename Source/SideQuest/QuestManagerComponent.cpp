@@ -49,6 +49,8 @@ void UQuestManagerComponent::StartQuest(const FQuestData& QuestData)
 
 	ActiveQuests.Add(NewQuest);
 
+	OnQuestStarted.Broadcast(NewQuest);
+
 	UE_LOG(LogTemp, Warning, TEXT("Quest Started: %s"), *QuestData.QuestID.ToString());
 }
 
