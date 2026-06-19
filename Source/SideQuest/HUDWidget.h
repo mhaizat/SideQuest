@@ -17,12 +17,11 @@ class SIDEQUEST_API UHUDWidget : public UUserWidget
 	
 public:
 	virtual void NativeConstruct() override;
-	virtual void NativeDestruct() override;
+
+	void InitializeHUD(UUIManagerComponent* InUIManagerComponent);
 
 	UFUNCTION(BlueprintCallable)
 	UQuestTrackerWidget* GetQuestTrackerWidget() const { return QuestTrackerWidget; }
-
-	void InitializeHUDWidget(UUIManagerComponent* InUIManagerComponent);
 
 	void SetBindingDelegates();
 

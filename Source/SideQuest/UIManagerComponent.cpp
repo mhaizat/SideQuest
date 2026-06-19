@@ -23,7 +23,7 @@ void UUIManagerComponent::BeginPlay()
 
 		if (UHUDWidget* HUDWidget = Cast<UHUDWidget>(Widget))
 		{
-			HUDWidget->InitializeHUDWidget(this);
+			HUDWidget->InitializeHUD(this);
 		}
 	}
 }

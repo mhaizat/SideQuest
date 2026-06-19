@@ -15,65 +15,35 @@ void UHUDWidget::NativeConstruct()
 	QuestManagerComponent = Player->GetQuestManager();
 }
 
-void UHUDWidget::NativeDestruct()
+void UHUDWidget::InitializeHUD(UUIManagerComponent* InUIManagerComponent)
 {
-}
-
-void UHUDWidget::InitializeHUDWidget(UUIManagerComponent* InUIManagerComponent)
-{
-	UE_LOG(LogTemp, Warning, TEXT("InitializeHUDWidget 1"));
-
 	SetVisibility(ESlateVisibility::Visible);
 
 	UIManagerComponent = InUIManagerComponent;
 	if (!UIManagerComponent) return;
-		
-	UE_LOG(LogTemp, Warning, TEXT("InitializeHUDWidget 2"));
 
-	UUserWidget* Widget = UIManagerComponent->GetWidget("Quest");
-	if (!Widget)
-	{
-		UE_LOG(LogTemp, Warning, TEXT("InitializeHUDWidget 3"));
-		return;
-	}
-
-	QuestTrackerWidget = Cast<UQuestTrackerWidget>(Widget);
+	QuestTrackerWidget = Cast<UQuestTrackerWidget>(UIManagerComponent->GetWidget("Quest"));
 	if (!QuestTrackerWidget) return;
 
-	//QuestTrackerWidget->SetVisibility(ESlateVisibility::Visible);
-
-	UE_LOG(LogTemp, Warning, TEXT("InitializeHUDWidget 4"));
+	NotificationWidget = Cast<UNotificationWidget>(UIManagerComponent->GetWidget("Notification"));
+	if (!NotificationWidget) return;
 
 	if (SB_Quest && QuestTrackerWidget)
 	{
 		SB_Quest->SetContent(QuestTrackerWidget);
 	}
 
+	SB_Notification->SetContent(NotificationWidget);
 	SetBindingDelegates();
 }
 
 void UHUDWidget::SetBindingDelegates()
 {
-	UE_LOG(LogTemp, Warning, TEXT("SetBindingDelegates 1"));
-
-	UUserWidget* Widget = UIManagerComponent->GetWidget("Notification");
-	NotificationWidget = Cast<UNotificationWidget>(Widget);
-	if (!NotificationWidget) return;
-
-	UE_LOG(LogTemp, Warning, TEXT("SetBindingDelegates 2"));
-
-
-	SB_Notification->SetContent(NotificationWidget);
-
 	APlayerController* PC = GetOwningPlayer();
 	if (!PC) return;
 
-	UE_LOG(LogTemp, Warning, TEXT("SetBindingDelegates 3"));
-
 	ACustomPlayerCharacter* Player = Cast<ACustomPlayerCharacter>(PC->GetPawn());
 	if (!Player) return;
-
-	UE_LOG(LogTemp, Warning, TEXT("SetBindingDelegates 4"));
 
 	// safe bind
 	Player->OnNotificationVisibilityChanged.RemoveAll(this);
