@@ -137,9 +137,11 @@ void ACustomPlayerCharacter::Interact()
 void ACustomPlayerCharacter::SetCurrentNPC(ANPCInteractable* NPC)
 {
 	CurrentNPC = NPC;
+	OnNotificationVisibilityChanged.Broadcast(true);
 }
 
 void ACustomPlayerCharacter::ClearCurrentNPC(ANPCInteractable* NPC)
 {
 	CurrentNPC = nullptr;
+	OnNotificationVisibilityChanged.Broadcast(false);
 }

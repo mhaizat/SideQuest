@@ -15,6 +15,8 @@
 #include "GameStateManagerComponent.h"
 #include "CustomPlayerCharacter.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnNotificationVisibilityChanged, bool, bVisible);
+
 UCLASS()
 class SIDEQUEST_API ACustomPlayerCharacter : public ASideQuestCharacter
 {
@@ -41,6 +43,11 @@ public:
 	UUIManagerComponent* GetUIManager() const { return UIManager; }
 	UDialogueComponent* GetDialogueComponent() const { return DialogueComponent; }
 	UGameStateManagerComponent* GetGameStateManagerComponent() const { return GameStateManagerComponent; }
+
+	ANPCInteractable* GetCurrentNPC() { return CurrentNPC; }
+
+	UPROPERTY(BlueprintAssignable)
+	FOnNotificationVisibilityChanged OnNotificationVisibilityChanged;
 
 protected:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;

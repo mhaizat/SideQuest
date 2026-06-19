@@ -5,6 +5,7 @@
 #include "Components/SphereComponent.h"
 #include "NPCInteractable.generated.h"
 
+
 UCLASS()
 class SIDEQUEST_API ANPCInteractable : public ANPCBase
 {
