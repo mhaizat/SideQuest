@@ -4,6 +4,14 @@
 #include "GameFramework/Actor.h"
 #include "NPCBase.generated.h"
 
+UENUM(BlueprintType)
+enum class ENPCType : uint8
+{
+	Dialogue,
+	QuestGiver,
+	Shop
+};
+
 UCLASS()
 class SIDEQUEST_API ANPCBase : public AActor
 {
@@ -17,6 +25,9 @@ protected:
 
 	UPROPERTY(VisibleAnywhere)
 	UStaticMeshComponent* Mesh;
+
+	UPROPERTY(EditAnywhere, Category = "NPC")
+	ENPCType NPCType;
 
 public:	
 	virtual void Tick(float DeltaTime) override;

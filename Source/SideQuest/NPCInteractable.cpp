@@ -37,6 +37,21 @@ void ANPCInteractable::HandlePlayerExit(UPrimitiveComponent* OverlappedComp, AAc
 	OnPlayerExit(OverlappedComp, OtherActor, OtherComp, OtherBodyIndex);
 }
 
+void ANPCInteractable::HandleDialogue(AActor* Interactor)
+{
+	UE_LOG(LogTemp, Warning, TEXT("Base Dialogue NPC"));
+}
+
+void ANPCInteractable::HandleShop(AActor* Interactor)
+{
+	UE_LOG(LogTemp, Warning, TEXT("Base Shop NPC"));
+}
+
+void ANPCInteractable::HandleQuest(AActor* Interactor)
+{
+	UE_LOG(LogTemp, Warning, TEXT("Quest Giver NPC"));
+}
+
 void ANPCInteractable::OnPlayerEnter(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 	ACustomPlayerCharacter* Player = Cast<ACustomPlayerCharacter>(OtherActor);

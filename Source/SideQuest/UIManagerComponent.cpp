@@ -24,6 +24,7 @@ void UUIManagerComponent::BeginPlay()
 		if (UHUDWidget* HUDWidget = Cast<UHUDWidget>(Widget))
 		{
 			HUDWidget->InitializeHUD(this);
+			CurrentWidget = HUDWidget;
 		}
 	}
 }
@@ -43,6 +44,11 @@ void UUIManagerComponent::ShowWidget(FName WidgetID)
 	UUserWidget* Widget = GetWidget(WidgetID);
 	if (!Widget) return;
 	
+	if (CurrentWidget)
+	{
+		CurrentWidget->SetVisibility(ESlateVisibility::Collapsed);
+	}
+
 	CurrentWidget = Widget;
 	CurrentWidget->SetVisibility(ESlateVisibility::Visible);
 }

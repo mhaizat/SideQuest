@@ -19,6 +19,10 @@ public:
 	UPROPERTY(VisibleAnywhere)
 	USphereComponent* InteractionSphere;
 
+	virtual void HandleDialogue(AActor* Interactor);
+	virtual void HandleQuest(AActor* Interactor);
+	virtual void HandleShop(AActor* Interactor);
+
 protected:
 	virtual void BeginPlay() override;
 
