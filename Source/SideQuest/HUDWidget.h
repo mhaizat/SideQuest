@@ -8,7 +8,6 @@
 #include "HUDWidget.generated.h"
 
 class UUIManagerComponent;
-class UQuestManagerComponent;
 
 UCLASS()
 class SIDEQUEST_API UHUDWidget : public UUserWidget
@@ -16,8 +15,6 @@ class SIDEQUEST_API UHUDWidget : public UUserWidget
 	GENERATED_BODY()
 	
 public:
-	virtual void NativeConstruct() override;
-
 	void InitializeHUD(UUIManagerComponent* InUIManagerComponent);
 
 	UFUNCTION(BlueprintCallable)
@@ -42,8 +39,4 @@ protected:
 
 	UPROPERTY()
 	UUIManagerComponent* UIManagerComponent;
-
-	UPROPERTY()
-	UQuestManagerComponent* QuestManagerComponent;
-
 };

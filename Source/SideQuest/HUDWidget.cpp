@@ -1,19 +1,6 @@
 #include "HUDWidget.h"
 #include "CustomPlayerCharacter.h"
-#include "QuestManagerComponent.h"
 #include "GameFramework/Actor.h"
-
-void UHUDWidget::NativeConstruct()
-{
-	Super::NativeConstruct();
-
-	APlayerController* PC = GetOwningPlayer();
-
-	ACustomPlayerCharacter* Player = Cast<ACustomPlayerCharacter>(PC->GetPawn());
-	if (!Player) return;
-
-	QuestManagerComponent = Player->GetQuestManager();
-}
 
 void UHUDWidget::InitializeHUD(UUIManagerComponent* InUIManagerComponent)
 {
@@ -33,7 +20,9 @@ void UHUDWidget::InitializeHUD(UUIManagerComponent* InUIManagerComponent)
 		SB_Quest->SetContent(QuestTrackerWidget);
 	}
 
-	SB_Notification->SetContent(NotificationWidget);
+	if (SB_Notification)
+		SB_Notification->SetContent(NotificationWidget);
+	
 	SetBindingDelegates();
 }
 
