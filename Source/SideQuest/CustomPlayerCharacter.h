@@ -13,6 +13,7 @@
 #include "UIManagerComponent.h"
 #include "DialogueComponent.h"
 #include "GameStateManagerComponent.h"
+#include "InventoryComponent.h"
 #include "CustomPlayerCharacter.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnNotificationVisibilityChanged, bool, bVisible);
@@ -43,6 +44,7 @@ public:
 	UUIManagerComponent* GetUIManager() const { return UIManager; }
 	UDialogueComponent* GetDialogueComponent() const { return DialogueComponent; }
 	UGameStateManagerComponent* GetGameStateManagerComponent() const { return GameStateManagerComponent; }
+	UInventoryComponent* GetInventoryComponent() const { return InventoryComponent; }
 
 	ANPCInteractable* GetCurrentNPC() { return CurrentNPC; }
 
@@ -71,6 +73,9 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	class UGameStateManagerComponent* GameStateManagerComponent;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+	class UInventoryComponent* InventoryComponent;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Combat")
 	UAnimMontage* AttackMontage;

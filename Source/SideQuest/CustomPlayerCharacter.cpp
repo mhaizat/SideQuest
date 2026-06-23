@@ -9,6 +9,7 @@ ACustomPlayerCharacter::ACustomPlayerCharacter()
 	QuestManager = CreateDefaultSubobject<UQuestManagerComponent>(TEXT("QuestManager"));
 	DialogueComponent = CreateDefaultSubobject<UDialogueComponent>(TEXT("DialogueComponent"));
 	GameStateManagerComponent = CreateDefaultSubobject<UGameStateManagerComponent>(TEXT("GameStateManagerComponent"));
+	InventoryComponent = CreateDefaultSubobject<UInventoryComponent>(TEXT("InventoryComponent"));
 }
 
 void ACustomPlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)

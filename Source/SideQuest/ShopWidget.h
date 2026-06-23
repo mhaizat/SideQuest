@@ -25,5 +25,9 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<UShopItemEntryWidget> ShopItemEntryClass;
+
+	//void HandleBuyClicked();
+	UFUNCTION()
+	void HandleBuyItem(const FItemInstance& Item);
 	
 };

@@ -17,11 +17,12 @@ class SIDEQUEST_API UShopItemEntryWidget : public UUserWidget
 	GENERATED_BODY()
 	
 public:
-    void InitializeItem(const FItemInstance& Item);
+    void InitializeItem(const FItemInstance& InItem);
 
     FOnShopItemClicked OnShopItemClicked;
 
 protected:
+    virtual void NativeConstruct() override;
 
     UPROPERTY(meta = (BindWidget))
     UTextBlock* TXT_ItemName;
@@ -36,4 +37,9 @@ protected:
     UButton* BTN_Buy;
 
     FString AffixString;
+
+    FItemInstance Item;
+
+    UFUNCTION()
+    void OnBuyClicked();
 };

@@ -1,7 +1,18 @@
 #include "ShopItemEntryWidget.h"
 
-void UShopItemEntryWidget::InitializeItem(const FItemInstance& Item)
+void UShopItemEntryWidget::NativeConstruct()
 {
+	Super::NativeConstruct();
+
+	if (BTN_Buy)
+	{
+		BTN_Buy->OnClicked.AddDynamic(this, &UShopItemEntryWidget::OnBuyClicked);
+	}
+}
+void UShopItemEntryWidget::InitializeItem(const FItemInstance& InItem)
+{
+	Item = InItem;
+
 	if (TXT_ItemName)
 	{
 		FString ItemName = UEnum::GetValueAsString(Item.WeaponType);
@@ -31,4 +42,9 @@ void UShopItemEntryWidget::InitializeItem(const FItemInstance& Item)
 	{
 		TXT_Affix->SetText(FText::FromString(AffixString));
 	}
+}
+
+void UShopItemEntryWidget::OnBuyClicked()
+{
+	OnShopItemClicked.Broadcast(Item);
 }
