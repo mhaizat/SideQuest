@@ -3,6 +3,8 @@
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
 #include "ItemTypes.h"
+#include "Components/ScrollBox.h"
+#include "ShopItemEntryWidget.h"
 #include "ShopWidget.generated.h"
 
 UCLASS()
@@ -17,5 +19,11 @@ public:
 protected:
 	UPROPERTY(VisibleAnywhere)
 	TArray<FItemInstance> ShopItems;
+
+	UPROPERTY(meta = (BindWidget))
+	UScrollBox* SB_Items;
+
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<UShopItemEntryWidget> ShopItemEntryClass;
 	
 };

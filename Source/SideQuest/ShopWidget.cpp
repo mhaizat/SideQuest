@@ -8,7 +8,13 @@ void UShopWidget::SetShopItems(const TArray<FItemInstance>& Items)
 
 	for (const FItemInstance& Item : ShopItems)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Item: %s"),
-			*UEnum::GetValueAsString(Item.WeaponType));
+		if (!ShopItemEntryClass) continue;
+
+		UShopItemEntryWidget* Entry = CreateWidget<UShopItemEntryWidget>(GetWorld(), ShopItemEntryClass);
+		if (!Entry) continue;
+
+		Entry->InitializeItem(Item);
+
+		SB_Items->AddChild(Entry);
 	}
 }
