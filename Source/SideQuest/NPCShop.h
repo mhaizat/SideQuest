@@ -41,9 +41,12 @@ protected:
 	TArray<FAffixDefinition> AffixPool;
 
 	void OpenShop(class ACustomPlayerCharacter* Player);
+	void CloseShop(ACustomPlayerCharacter* Player);
 
 	UPROPERTY(VisibleAnywhere)
 	TArray<FItemInstance> CurrentGeneratedItems;
 
 	EItemRarity RollRarity();
+
+	bool IsOpen = false;
 };

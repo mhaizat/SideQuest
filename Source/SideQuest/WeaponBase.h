@@ -25,6 +25,9 @@ public:
 
 	virtual void Tick(float DeltaTime) override;
 
+	float GetDamage() const;
+	void SetDamage(float Damage) { BaseDamage = Damage; }
+
 protected:
 	virtual void BeginPlay() override;
 	void PerformTrace();
@@ -40,10 +43,8 @@ protected:
 
 	TArray<AActor*> HitActors;
 
-	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
-	float Damage = 20.f;
-
-	float GetDamage() const;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapon")
+	float BaseDamage = 20.f;
 
 	UPROPERTY(EditDefaultsOnly)
 	EWeaponTypes WeaponType;

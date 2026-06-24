@@ -16,8 +16,7 @@ public:
 	bool AddItem(const FItemInstance& Item);
 	bool RemoveItem(int32 Index);
 
-	//const TArray<FItemInstance>& GetItems() const;
-
+	const TArray<FItemInstance>& GetItems() const;
 protected:
 	virtual void BeginPlay() override;
 

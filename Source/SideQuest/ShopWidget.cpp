@@ -8,6 +8,8 @@ void UShopWidget::SetShopItems(const TArray<FItemInstance>& Items)
 
 	UE_LOG(LogTemp, Warning, TEXT("Shop received %d items"), Items.Num());
 
+	SB_Items->ClearChildren();
+
 	for (const FItemInstance& Item : ShopItems)
 	{
 		if (!ShopItemEntryClass) continue;
@@ -20,7 +22,7 @@ void UShopWidget::SetShopItems(const TArray<FItemInstance>& Items)
 		Entry->OnShopItemClicked.AddDynamic(this, &UShopWidget::HandleBuyItem);
 		Entry->OnItemHovered.AddDynamic(this, &UShopWidget::HandleItemHovered);
 		Entry->OnItemUnhovered.AddDynamic(this, &UShopWidget::HandleItemUnhovered);
-
+		
 		SB_Items->AddChild(Entry);
 
 		ItemPreviewWidget->SetVisibility(ESlateVisibility::Collapsed);

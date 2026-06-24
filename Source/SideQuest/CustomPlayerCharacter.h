@@ -14,6 +14,7 @@
 #include "DialogueComponent.h"
 #include "GameStateManagerComponent.h"
 #include "InventoryComponent.h"
+#include "InventoryWidget.h"
 #include "CustomPlayerCharacter.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnNotificationVisibilityChanged, bool, bVisible);
@@ -34,9 +35,6 @@ public:
 	UFUNCTION()
 	void AttackFinished();
 
-	void EquipWeaponSlot1();
-	void EquipWeaponSlot2();
-
 	void SetCurrentNPC(ANPCInteractable* NPC);
 	void ClearCurrentNPC(ANPCInteractable* NPC);
 
@@ -45,16 +43,20 @@ public:
 	UDialogueComponent* GetDialogueComponent() const { return DialogueComponent; }
 	UGameStateManagerComponent* GetGameStateManagerComponent() const { return GameStateManagerComponent; }
 	UInventoryComponent* GetInventoryComponent() const { return InventoryComponent; }
+	UWeaponManagerComponent* GetWeaponManagerComponent() const { return WeaponManager; }
 
 	ANPCInteractable* GetCurrentNPC() { return CurrentNPC; }
 
 	UPROPERTY(BlueprintAssignable)
 	FOnNotificationVisibilityChanged OnNotificationVisibilityChanged;
 
+	void EquipInventoryItem(int32 Index);
+
 protected:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	virtual void BeginPlay() override;
 	void Attack();
+	void OpenInventory();
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	class UAttributeComponent* Attributes;
@@ -85,6 +87,9 @@ protected:
 
 	UPROPERTY(EditAnywhere, Category = "Input")
 	class UInputAction* InteractAction;
+
+	UPROPERTY(EditAnywhere, Category = "Input")
+	class UInputAction* InventoryAction;
 
 	UPROPERTY()
 	AWeaponBase* EquippedWeapon;

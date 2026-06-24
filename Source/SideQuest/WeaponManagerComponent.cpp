@@ -1,4 +1,4 @@
-#include "WeaponManagerComponent.h"
+﻿#include "WeaponManagerComponent.h"
 #include "CustomPlayerCharacter.h"
 
 UWeaponManagerComponent::UWeaponManagerComponent()
@@ -6,56 +6,83 @@ UWeaponManagerComponent::UWeaponManagerComponent()
 	PrimaryComponentTick.bCanEverTick = false;
 }
 
-void UWeaponManagerComponent::BeginPlay()
+void UWeaponManagerComponent::EquipItem(const FItemInstance& Item)
 {
-	Super::BeginPlay();
+	// 1. Store item
+	EquippedItem = Item;
 
 	ACharacter* CharacterOwner = Cast<ACharacter>(GetOwner());
 	if (!CharacterOwner) return;
 
-	for (TSubclassOf<AWeaponBase> WeaponClass : WeaponInventory)
-	{
-		if (!WeaponClass) continue;
-
-		AWeaponBase* NewWeapon = GetWorld()->SpawnActor<AWeaponBase>(WeaponClass, CharacterOwner->GetActorTransform());
-		if (!NewWeapon) continue;
-
-		NewWeapon->AttachToComponent(CharacterOwner->GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, TEXT("weapon"));
-		NewWeapon->SetActorHiddenInGame(true);
-		NewWeapon->SetActorEnableCollision(false);
-
-		SpawnedWeapons.Add(NewWeapon);
-	}
-}
-
-void UWeaponManagerComponent::EquipWeapon(int32 Index)
-{
-	if (bIsAttacking) return;
-	if (!SpawnedWeapons.IsValidIndex(Index)) return;
-
+	// 2. Remove old weapon
 	if (EquippedWeapon)
 	{
-		EquippedWeapon->SetActorHiddenInGame(true);
-		EquippedWeapon->StopTrace();
+		EquippedWeapon->Destroy();
+		EquippedWeapon = nullptr;
 	}
 
-	CurrentWeaponIndex = Index;
-	EquippedWeapon = SpawnedWeapons[Index];
+	// 3. TEMP: map weapon type → class
+	TSubclassOf<AWeaponBase> WeaponClass = nullptr;
 
-	EquippedWeapon->SetActorHiddenInGame(false);
+	switch (Item.WeaponType)
+	{
+	case EWeaponTypes::Sword:
+		WeaponClass = SwordClass;
+		break;
+
+	case EWeaponTypes::Axe:
+		WeaponClass = AxeClass;
+		break;
+
+	case EWeaponTypes::Hammer:
+		WeaponClass = HammerClass;
+		break;
+	}
+
+	if (!WeaponClass) return;
+
+	// 4. Spawn weapon
+	AWeaponBase* NewWeapon = GetWorld()->SpawnActor<AWeaponBase>(WeaponClass, CharacterOwner->GetActorTransform());
+	if (!NewWeapon) return;
+
+	// 5. Attach weapon
+	NewWeapon->AttachToComponent(CharacterOwner->GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, TEXT("weapon"));
+	NewWeapon->SetActorHiddenInGame(false);
+	NewWeapon->SetActorEnableCollision(false);
+
+	EquippedWeapon = NewWeapon;
+
+	// 6. Apply stats
+	float FinalDamage = Item.BaseDamage;
+
+	for (const FAffixInstance& Affix : Item.Affixes)
+	{
+		switch (Affix.Type)
+		{
+		case EAffixType::BonusDamage:
+			FinalDamage += Affix.Value;
+			break;
+
+		default:
+			break;
+		}
+	}
+
+	EquippedWeapon->SetDamage(FinalDamage);
+
+	UE_LOG(LogTemp, Warning, TEXT("Equipped item weapon: %s | Damage: %.2f"), *UEnum::GetValueAsString(Item.WeaponType), FinalDamage);
 }
 
-void UWeaponManagerComponent::NextWeapon()
+void UWeaponManagerComponent::BeginPlay()
 {
-	if (SpawnedWeapons.Num() == 0) return;
-
-	int32 NextIndex = (CurrentWeaponIndex + 1) % SpawnedWeapons.Num();
-	EquipWeapon(NextIndex);
+	Super::BeginPlay();
 }
 
 void UWeaponManagerComponent::SetAttacking(bool bAttacking)
 {
 	bIsAttacking = bAttacking;
+	UE_LOG(LogTemp, Warning, TEXT("Attack 4"));
+
 }
 
 bool UWeaponManagerComponent::IsAttacking() const

@@ -20,6 +20,7 @@ void ACustomPlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerIn
 	{
 		EnhancedInputComponent->BindAction(AttackAction, ETriggerEvent::Started, this, &ACustomPlayerCharacter::Attack);
 		EnhancedInputComponent->BindAction(InteractAction, ETriggerEvent::Started, this, &ACustomPlayerCharacter::Interact);
+		EnhancedInputComponent->BindAction(InventoryAction, ETriggerEvent::Started, this, &ACustomPlayerCharacter::OpenInventory);
 	}
 }
 
@@ -35,12 +36,19 @@ void ACustomPlayerCharacter::Attack()
 {
 	if (!AttackMontage || !WeaponManager) return;
 
+	UE_LOG(LogTemp, Warning, TEXT("Attack 1"));
+
+
 	AWeaponBase* CurrentWeapon = WeaponManager->GetCurrentEquippedWeapon();
 
 	if (!CurrentWeapon)
 	{
+		UE_LOG(LogTemp, Warning, TEXT("Attack 2"));
+
 		return;
 	}
+
+	UE_LOG(LogTemp, Warning, TEXT("Attack 3"));
 
 	WeaponManager->SetAttacking(true);
 
@@ -64,6 +72,22 @@ void ACustomPlayerCharacter::AttackWindowStart()
 	CurrentWeapon->StartTrace();
 }
 
+void ACustomPlayerCharacter::EquipInventoryItem(int32 Index)
+{
+	if (!InventoryComponent || !WeaponManager) return;
+
+	const TArray<FItemInstance>& Items = InventoryComponent->GetItems();
+
+	if (!Items.IsValidIndex(Index)) return;
+
+	const FItemInstance& Item = Items[Index];
+
+	WeaponManager->EquipItem(Item);
+
+	UE_LOG(LogTemp, Warning, TEXT("Equipped item from inventory: %s"),
+		*UEnum::GetValueAsString(Item.WeaponType));
+}
+
 void ACustomPlayerCharacter::AttackWindowEnd()
 {
 	if (!WeaponManager)
@@ -79,22 +103,6 @@ void ACustomPlayerCharacter::AttackWindowEnd()
 	}
 
 	CurrentWeapon->StopTrace();
-}
-
-void ACustomPlayerCharacter::EquipWeaponSlot1()
-{
-	if (WeaponManager)
-	{
-		WeaponManager->EquipWeapon(0);
-	}
-}
-
-void ACustomPlayerCharacter::EquipWeaponSlot2()
-{
-	if (WeaponManager)
-	{
-		WeaponManager->EquipWeapon(1);
-	}
 }
 
 void ACustomPlayerCharacter::AttackFinished()
@@ -145,4 +153,28 @@ void ACustomPlayerCharacter::ClearCurrentNPC(ANPCInteractable* NPC)
 {
 	CurrentNPC = nullptr;
 	OnNotificationVisibilityChanged.Broadcast(false);
+}
+
+void ACustomPlayerCharacter::OpenInventory()
+{
+	if (!UIManager || !InventoryComponent) return;
+
+	UInventoryWidget* Widget = Cast<UInventoryWidget>(UIManager->GetWidget("Inventory"));
+
+	if (!Widget)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Inventory widget null"));
+
+		return;
+	}
+
+	if (Widget->GetVisibility() == ESlateVisibility::Visible)
+	{
+		GameStateManagerComponent->SetState(EGameState::Gameplay);
+		return;
+	}
+
+	Widget->SetInventory(InventoryComponent);
+
+	UIManager->ShowWidget("Inventory");
 }

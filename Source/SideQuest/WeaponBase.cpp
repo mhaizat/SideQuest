@@ -92,18 +92,6 @@ void AWeaponBase::PerformTrace()
 
 float AWeaponBase::GetDamage() const
 {
-	switch (WeaponType)
-	{
-	case EWeaponTypes::Sword:
-		return 100.f;
-
-	case EWeaponTypes::Axe:
-		return 35.f;
-
-	case EWeaponTypes::Hammer:
-		return 50.f;
-	}
-
-	return 20.f;
+	return BaseDamage;
 }
 

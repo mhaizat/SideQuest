@@ -20,3 +20,17 @@ bool UInventoryComponent::AddItem(const FItemInstance& Item)
 
     return true;
 }
+
+bool UInventoryComponent::RemoveItem(int32 Index)
+{
+	if (!Items.IsValidIndex(Index))
+		return false;
+
+	Items.RemoveAt(Index);
+	return true;
+}
+
+const TArray<FItemInstance>& UInventoryComponent::GetItems() const
+{
+    return Items;
+}

@@ -8,7 +8,14 @@ void ANPCShop::Interact(AActor* Interactor)
 	ACustomPlayerCharacter* Player = Cast<ACustomPlayerCharacter>(Interactor);
 	if (!Player) return;
 
-	OpenShop(Player);
+	if (IsOpen)
+	{
+		CloseShop(Player);
+	}
+	else
+	{
+		OpenShop(Player);
+	}
 }
 
 void ANPCShop::OpenShop(ACustomPlayerCharacter* Player)
@@ -23,26 +30,9 @@ void ANPCShop::OpenShop(ACustomPlayerCharacter* Player)
 
 	CurrentGeneratedItems.Empty();
 
-	// TEMP: generate 3 items for now
 	CurrentGeneratedItems.Add(GenerateItem(EWeaponTypes::Sword));
 	CurrentGeneratedItems.Add(GenerateItem(EWeaponTypes::Axe));
 	CurrentGeneratedItems.Add(GenerateItem(EWeaponTypes::Hammer));
-
-	for (const FItemInstance& Item : CurrentGeneratedItems)
-	{
-		FString RarityString = UEnum::GetValueAsString(Item.Rarity);
-		FString WeaponString = UEnum::GetValueAsString(Item.WeaponType);
-
-		UE_LOG(LogTemp, Warning, TEXT("=== ITEM ==="));
-		UE_LOG(LogTemp, Warning, TEXT("Weapon: %s"), *WeaponString);
-		UE_LOG(LogTemp, Warning, TEXT("Rarity: %s"), *RarityString);
-		UE_LOG(LogTemp, Warning, TEXT("BaseDamage: %f"), Item.BaseDamage);
-
-		for (const FAffixInstance& Affix : Item.Affixes)
-		{
-			FString AffixType = UEnum::GetValueAsString(Affix.Type);
-		}
-	}
 
 	UShopWidget* ShopWidget = Cast<UShopWidget>(UIManager->GetWidget("Shop"));
 	if (!ShopWidget) return;
@@ -50,6 +40,27 @@ void ANPCShop::OpenShop(ACustomPlayerCharacter* Player)
 	ShopWidget->SetShopItems(CurrentGeneratedItems);
 
 	UIManager->ShowWidget("Shop");
+
+	IsOpen = true;
+
+	UE_LOG(LogTemp, Warning, TEXT("Shop Opened"));
+}
+
+void ANPCShop::CloseShop(ACustomPlayerCharacter* Player)
+{
+	UUIManagerComponent* UIManager = Player->GetUIManager();
+	if (!UIManager) return;
+
+	UGameStateManagerComponent* GameStateManagerComponent = Player->GetGameStateManagerComponent();
+	if (!GameStateManagerComponent) return;
+
+	GameStateManagerComponent->SetState(EGameState::Gameplay);
+
+	UIManager->HideWidget("Shop"); // or remove / collapse depending on your system
+
+	IsOpen = false;
+
+	UE_LOG(LogTemp, Warning, TEXT("Shop Closed"));
 }
 
 void ANPCShop::AddItem(const FShopItem& Item)
