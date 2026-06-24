@@ -41,19 +41,11 @@ void ANPCShop::OpenShop(ACustomPlayerCharacter* Player)
 		for (const FAffixInstance& Affix : Item.Affixes)
 		{
 			FString AffixType = UEnum::GetValueAsString(Affix.Type);
-
-			UE_LOG(LogTemp, Warning, TEXT("  Affix: %s | Value: %f"), *AffixType, Affix.Value);
 		}
 	}
 
-
-
 	UShopWidget* ShopWidget = Cast<UShopWidget>(UIManager->GetWidget("Shop"));
-	if (!ShopWidget)
-	{
-		UE_LOG(LogTemp, Warning, TEXT("Shop widget not found"));
-		return;
-	}
+	if (!ShopWidget) return;
 
 	ShopWidget->SetShopItems(CurrentGeneratedItems);
 
@@ -135,16 +127,7 @@ TArray<FAffixInstance> ANPCShop::GenerateAffixes(EItemRarity Rarity)
 		break;
 	}
 
-	UE_LOG(LogTemp, Warning, TEXT("GenerateAffixes CALLED"));
-	UE_LOG(LogTemp, Warning, TEXT("Rarity: %s"), *UEnum::GetValueAsString(Rarity));
-	UE_LOG(LogTemp, Warning, TEXT("AffixPool Size: %d"), AffixPool.Num());
-	UE_LOG(LogTemp, Warning, TEXT("AffixCount: %d"), AffixCount);
-
-	// Safety check
-	if (AffixPool.Num() == 0)
-	{
-		return Result;
-	}
+	if (AffixPool.Num() == 0) return Result;
 
 	for (int32 i = 0; i < AffixCount; i++)
 	{

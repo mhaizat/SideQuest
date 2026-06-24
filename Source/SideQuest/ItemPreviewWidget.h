@@ -13,16 +13,12 @@ public:
 	void ShowItem(const FItemInstance& Item);
 
 protected:
-
 	UPROPERTY(meta = (BindWidget))
 	UTextBlock* TXT_Name;
-
 	UPROPERTY(meta = (BindWidget))
 	UTextBlock* TXT_Rarity;
-
 	UPROPERTY(meta = (BindWidget))
 	UTextBlock* TXT_Damage;
-
 	UPROPERTY(meta = (BindWidget))
 	UTextBlock* TXT_Affixes;
 };

@@ -19,10 +19,7 @@ void UShopWidget::SetShopItems(const TArray<FItemInstance>& Items)
 
 		Entry->OnShopItemClicked.AddDynamic(this, &UShopWidget::HandleBuyItem);
 		Entry->OnItemHovered.AddDynamic(this, &UShopWidget::HandleItemHovered);
-
-		Entry->OnItemUnhovered.AddDynamic(
-			this,
-			&UShopWidget::HandleItemUnhovered);
+		Entry->OnItemUnhovered.AddDynamic(this, &UShopWidget::HandleItemUnhovered);
 
 		SB_Items->AddChild(Entry);
 

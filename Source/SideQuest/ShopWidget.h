@@ -18,6 +18,13 @@ public:
 	void SetShopItems(const TArray<FItemInstance>& Items);
 
 protected:
+	UFUNCTION()
+	void HandleBuyItem(const FItemInstance& Item);
+	UFUNCTION()
+	void HandleItemHovered(const FItemInstance& Item);
+	UFUNCTION()
+	void HandleItemUnhovered();
+
 	UPROPERTY(VisibleAnywhere)
 	TArray<FItemInstance> ShopItems;
 
@@ -29,13 +36,4 @@ protected:
 
 	UPROPERTY(meta = (BindWidget))
 	UItemPreviewWidget* ItemPreviewWidget;
-
-	UFUNCTION()
-	void HandleBuyItem(const FItemInstance& Item);
-
-	UFUNCTION()
-	void HandleItemHovered(const FItemInstance& Item);
-	
-	UFUNCTION()
-	void HandleItemUnhovered();
 };
