@@ -18,8 +18,15 @@ void UShopWidget::SetShopItems(const TArray<FItemInstance>& Items)
 		Entry->InitializeItem(Item);
 
 		Entry->OnShopItemClicked.AddDynamic(this, &UShopWidget::HandleBuyItem);
+		Entry->OnItemHovered.AddDynamic(this, &UShopWidget::HandleItemHovered);
+
+		Entry->OnItemUnhovered.AddDynamic(
+			this,
+			&UShopWidget::HandleItemUnhovered);
 
 		SB_Items->AddChild(Entry);
+
+		ItemPreviewWidget->SetVisibility(ESlateVisibility::Collapsed);
 	}
 }
 
@@ -36,4 +43,19 @@ void UShopWidget::HandleBuyItem(const FItemInstance& Item)
 	InventoryComponent->AddItem(Item);
 
 	UE_LOG(LogTemp, Warning, TEXT("Bought item: %s"), *UEnum::GetValueAsString(Item.WeaponType));
+}
+
+void UShopWidget::HandleItemHovered(const FItemInstance& Item)
+{
+	if (!ItemPreviewWidget) return;
+
+	ItemPreviewWidget->ShowItem(Item);
+	ItemPreviewWidget->SetVisibility(ESlateVisibility::Visible);
+}
+
+void UShopWidget::HandleItemUnhovered()
+{
+	if (!ItemPreviewWidget) return;
+
+	ItemPreviewWidget->SetVisibility(ESlateVisibility::Collapsed);
 }

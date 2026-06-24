@@ -26,8 +26,6 @@ class SIDEQUEST_API ANPCShop : public ANPCInteractable
 	
 public:
 	virtual void Interact(AActor* Interactor) override;
-
-	// barebone shop manipulation
 	void AddItem(const FShopItem& Item);
 	void RemoveItem(FName ItemID);
 
@@ -39,7 +37,6 @@ protected:
 
 	TArray<FAffixInstance> GenerateAffixes(EItemRarity Rarity);
 	FItemInstance GenerateItem(EWeaponTypes Type);
-	//float GetScaledValue(EItemRarity Rarity, FAffixDefinition Def);
 	UPROPERTY(EditAnywhere, Category = "Shop|Affixes")
 	TArray<FAffixDefinition> AffixPool;
 

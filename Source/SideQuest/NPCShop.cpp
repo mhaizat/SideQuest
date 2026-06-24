@@ -1,4 +1,5 @@
 #include "NPCShop.h"
+#include "GameStateManagerComponent.h"
 
 void ANPCShop::Interact(AActor* Interactor)
 {
@@ -12,6 +13,14 @@ void ANPCShop::Interact(AActor* Interactor)
 
 void ANPCShop::OpenShop(ACustomPlayerCharacter* Player)
 {
+	UGameStateManagerComponent* GameStateManagerComponent = Player->GetGameStateManagerComponent();
+	if (!GameStateManagerComponent) return;
+
+	UUIManagerComponent* UIManager = Player->GetUIManager();
+	if (!UIManager) return;
+
+	GameStateManagerComponent->SetState(EGameState::UIOnly);
+
 	CurrentGeneratedItems.Empty();
 
 	// TEMP: generate 3 items for now
@@ -33,14 +42,11 @@ void ANPCShop::OpenShop(ACustomPlayerCharacter* Player)
 		{
 			FString AffixType = UEnum::GetValueAsString(Affix.Type);
 
-			UE_LOG(LogTemp, Warning, TEXT("  Affix: %s | Value: %f"),
-				*AffixType,
-				Affix.Value);
+			UE_LOG(LogTemp, Warning, TEXT("  Affix: %s | Value: %f"), *AffixType, Affix.Value);
 		}
 	}
 
-	UUIManagerComponent* UIManager = Player->GetUIManager();
-	if (!UIManager) return;
+
 
 	UShopWidget* ShopWidget = Cast<UShopWidget>(UIManager->GetWidget("Shop"));
 	if (!ShopWidget)
@@ -64,9 +70,9 @@ void ANPCShop::AddItem(const FShopItem& Item)
 void ANPCShop::RemoveItem(FName ItemID)
 {
 	ShopItems.RemoveAll([&](const FShopItem& Item)
-		{
-			return Item.ItemID == ItemID;
-		});
+	{
+		return Item.ItemID == ItemID;
+	});
 
 	UE_LOG(LogTemp, Warning, TEXT("Item removed: %s"), *ItemID.ToString());
 }
@@ -109,7 +115,6 @@ TArray<FAffixInstance> ANPCShop::GenerateAffixes(EItemRarity Rarity)
 	TArray<FAffixInstance> Result;
 
 	int32 AffixCount = 0;
-
 
 	switch (Rarity)
 	{

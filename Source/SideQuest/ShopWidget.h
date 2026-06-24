@@ -5,6 +5,7 @@
 #include "ItemTypes.h"
 #include "Components/ScrollBox.h"
 #include "ShopItemEntryWidget.h"
+#include "ItemPreviewWidget.h"
 #include "ShopWidget.generated.h"
 
 UCLASS()
@@ -26,8 +27,15 @@ protected:
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<UShopItemEntryWidget> ShopItemEntryClass;
 
-	//void HandleBuyClicked();
+	UPROPERTY(meta = (BindWidget))
+	UItemPreviewWidget* ItemPreviewWidget;
+
 	UFUNCTION()
 	void HandleBuyItem(const FItemInstance& Item);
+
+	UFUNCTION()
+	void HandleItemHovered(const FItemInstance& Item);
 	
+	UFUNCTION()
+	void HandleItemUnhovered();
 };
