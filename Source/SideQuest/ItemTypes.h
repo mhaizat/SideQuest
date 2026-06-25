@@ -75,3 +75,21 @@ struct FItemInstance
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float BaseDamage = 0.f;
 };
+
+USTRUCT()
+struct FEquipmentSlots
+{
+	GENERATED_BODY()
+
+	UPROPERTY()
+	FItemInstance Weapon;
+
+	UPROPERTY()
+	FItemInstance Armor;
+
+	UPROPERTY()
+	FItemInstance Helmet;
+
+	UPROPERTY()
+	FItemInstance Ring;
+};

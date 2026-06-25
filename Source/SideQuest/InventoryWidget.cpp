@@ -58,6 +58,6 @@ void UInventoryWidget::HandleEquipItem(const FItemInstance& Item)
 
 	if (!Player) return;
 
-	Player->GetWeaponManagerComponent()->EquipItem(Item);
+	Player->GetInventoryComponent()->EquipItem(Item);
 }
 

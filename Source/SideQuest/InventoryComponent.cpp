@@ -1,4 +1,5 @@
 #include "InventoryComponent.h"
+#include "WeaponManagerComponent.h"
 
 UInventoryComponent::UInventoryComponent()
 {
@@ -20,6 +21,22 @@ bool UInventoryComponent::AddItem(const FItemInstance& Item)
 
     return true;
 }
+
+bool UInventoryComponent::EquipItem(const FItemInstance& Item)
+{
+    EquippedItems.Weapon = Item;
+
+    ACustomPlayerCharacter* Player = Cast<ACustomPlayerCharacter>(GetOwner());
+    if (!Player) return false;
+
+    if (UWeaponManagerComponent* WeaponManager = Player->GetWeaponManagerComponent())
+    {
+        WeaponManager->EquipItem(Item);
+    }
+
+    return true;
+}
+
 
 bool UInventoryComponent::RemoveItem(int32 Index)
 {

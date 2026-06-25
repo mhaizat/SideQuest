@@ -17,12 +17,20 @@ public:
 	bool RemoveItem(int32 Index);
 
 	const TArray<FItemInstance>& GetItems() const;
+
+	bool EquipItem(const FItemInstance& Item);
+
 protected:
 	virtual void BeginPlay() override;
 
 	UPROPERTY(VisibleAnywhere, Category = "Shop|Debug")
 	TArray<FItemInstance> Items;
 
+	UPROPERTY(VisibleAnywhere)
+	FEquipmentSlots EquippedItems;
+
 	UPROPERTY(EditDefaultsOnly)
 	int32 MaxSlots = 20;
+
+	
 };
